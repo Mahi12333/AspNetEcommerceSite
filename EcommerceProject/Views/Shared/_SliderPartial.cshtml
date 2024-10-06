@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@* Ensure you have Bootstrap and other required CSS/JS in your layout *@
+
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <!-- Carousel indicators (dots) -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+
+    <!-- Carousel inner with images -->
+    <div class="carousel-inner">
+        <!-- First Slide -->
+        <div class="carousel-item active">
+            <img src="~/images/products/pic4.jpg" class="d-block w-100" alt="First Slide Image" style="height: 500px; object-fit: cover;">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>First Slide Title</h5>
+                <p>Description for the first slide goes here.</p>
+            </div>
+        </div>
+
+        <!-- Second Slide -->
+        <div class="carousel-item">
+            <img src="~/images/products//pic4.jpg" class="d-block w-100" alt="Second Slide Image" style="height: 500px; object-fit: cover;">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Second Slide Title</h5>
+                <p>Description for the second slide goes here.</p>
+            </div>
+        </div>
+
+        <!-- Third Slide -->
+        <div class="carousel-item">
+            <img src="~/images/products//pic4.jpg" class="d-block w-100" alt="Third Slide Image" style="height: 500px; object-fit: cover;">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Third Slide Title</h5>
+                <p>Description for the third slide goes here.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carousel controls (arrows) -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

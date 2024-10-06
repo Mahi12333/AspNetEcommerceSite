@@ -1,0 +1,134 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+ <div class="content-wrapper">
+                <div class="page-header">
+                  <h3 class="page-title"> Form elements </h3>
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                    </ol>
+                  </nav>
+                </div>
+                <div class="row">
+
+                  <div class="col-md-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                         <!-- show the message -->
+                         <div id="responseMessage" style="margin-top: 15px;"></div>
+                        <h4 class="card-title">Deatails Add</h4>
+                        <p class="card-description"> Table</p>
+                        <form class="forms-sample" id="my-form">
+                          <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Category</label>
+                            <div class="col-sm-9">
+                              <select class="form-control" name="category" id="category">
+                                <option value="">Select One</option>
+                              @*  <% data.allcategory.forEach(category => {%>
+                                    <option value="<%= category._id %>" <% if(category._id.toString() === data.allproduct.category) { %> selected <% } %> >
+                                        <%= category.category %>
+                                    </option>
+                                    <% }); %> *@
+                            </select>                            
+                              <span class="text-danger" id="catvalidation"> </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">SubCategory</label>
+                            <div class="col-sm-9">
+                              <select class="form-control" name="subcategory" id="subcategory">
+                                <option value="">Select One</option>
+                              @*  <% data.subcategory.forEach(subcategory => { %> 
+                                    <option value="<%= subcategory._id %>" <% if(subcategory._id.toString() === data.allproduct.subcategory) { %> selected <% } %> >
+                                        <%= subcategory.subcategory %>
+                                    </option>
+                                    <% }); %>   *@
+                                </select>
+                              <span class="text-danger" id="subvalidation"> </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Name</label>
+                            <div class="col-sm-9">
+                              <input type="text" class="form-control" id="exampleInputMobile" placeholder="product" autocomplete="off"
+                                name="product" value="">
+                                <span class="text-danger" id="produvalidation"> </span>
+                            </div>
+                          </div>
+
+                          <div class="form-group row">
+                            <label for="exampleInputImages" class="col-sm-3 col-form-label">Images</label>
+                            <div class="col-sm-9">
+                                <div class="choose-imagefile-wrap">
+                                    <div class="image-container" id="selectedImages">
+                                       @* <% data.allproduct.images.forEach(image => { %>
+                                        <div class="selected-image">
+                                            <img src="/backend/photo/<%= image %>" alt="Selected Image">
+                                            <p><%= image.substring(image.lastIndexOf('/') + 1) %></p>
+                                            <span class="remove-pic" onclick="removeImage(this)" >Remove</span>
+                                        </div>
+                                        <% }); %>  *@
+                                    </div>
+                                    <input type="file" id="primaryInput" onchange="handleFileSelection()" multiple>
+                                    <input type="hidden" id="hiddenInput" value="0">
+                                </div>
+                                <span class="text-danger" id="imgvalidation"> </span>
+                            </div>
+                        </div>
+
+                             
+                        <div class="form-group row">
+                          <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Size:</label>
+                          <div class="col-sm-8">
+                              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                               @* <% ["x", "xl", "xll", "m", "s"].forEach(size => { %>
+                                  <label><%= size.toUpperCase() %>:
+                                      <input type="checkbox" value="<%= size%>" name="checkbox[]" <% if (data.allproduct.size[0].includes(size.toString())) { %> checked <% } %>>
+                                  </label>
+                                    <% }); %>  *@
+                              </div>
+                              <span class="text-danger" id="checkboxvalidation"> </span>
+                          </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                          <label for="exampleInputMobile" class="col-sm-3 col-form-label">Original Price:</label>
+                          <div class="col-sm-9">
+                              <input type="number" class="form-control" id="originalPrice" placeholder="Orginal Price" name="org_price" value="">
+                              <span class="text-danger" id="org_pricevalidation"> </span>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <label for="exampleInputMobile" class="col-sm-3 col-form-label">Discount (%):</label>
+                          <div class="col-sm-9">
+                              <input type="number" class="form-control" id="discount" placeholder="Discount" name="discount" value="">
+                              <span class="text-danger" id="discountvalidation"> </span>
+                          </div>
+                      </div>
+
+                      <div class="form-group row">
+                          <label for="exampleInputMobile" class="col-sm-3 col-form-label">Final Price:</label>
+                          <div class="col-sm-9">
+                              <input type="number" class="form-control" id="finalPrice" placeholder="Final Price" name="curr_price" value="">
+                          </div>
+                       </div>
+                          <input type="hidden" id="pro_id" value="">
+                          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                          <button type="submit" class="btn btn-success mr-2">View</button>
+                          <button class="btn btn-dark">Cancel</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>

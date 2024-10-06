@@ -1,0 +1,55 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Basic Tables </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Display response message here -->
+                    <div id="responseMessage" style="margin-top: 15px;"></div>
+                    <h4 class="card-title">Category Table</h4>
+                    <a href="/backend/add-category">
+                        <button class="card-description badge badge-outline-warning" style="background-color: #000; margin-bottom:1rem">
+                            Add Category
+                        </button>
+                    </a>
+                    <div class="table-responsive">
+                        <table class="table" id="userTable">
+                            <thead>
+                                <tr>
+                                    <th>Category No.</th>
+                                    <th>Category Name</th>
+                                    <th>Status</th>
+                                    <th>Updated</th>
+                                    <th>Delete</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            <td>1</td>
+                            <td>Mahitosh</td>
+                            <td>Mahi</td>
+                            <td>Mah</td>
+                            <td>Mark</td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

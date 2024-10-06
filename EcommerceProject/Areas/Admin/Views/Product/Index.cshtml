@@ -1,0 +1,106 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Basic Tables </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Display response message here -->
+                    <div id="responseMessage" style="margin-top: 15px;"></div>
+                    <h4 class="card-title">Basic Table</h4>
+                    <button class="card-description badge badge-outline-warning" style="background-color: #000; margin-bottom:1rem">
+                        Add Product
+                    </button>
+                    <div class="d-flex align-items-center justify-content-between" style="margin-bottom:1rem">
+                        <div class="text-secondary">
+                            Show
+                            <div class="mx-2 d-inline-block">
+                                <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
+                            </div>
+                            entries
+                        </div>
+                        <div class="ms-auto text-secondary">
+                            Search:
+                            <div class="ms-2 d-inline-block">
+                                <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product No.</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>SubCategory</th>
+                                    <th>Images</th>
+                                    <th>Checkbox</th>
+                                    <th>Origial Rs.</th>
+                                    <th>Discount</th>
+                                    <th>Final Rs.</th>
+                                    <th>Status</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                 <tr>
+                                  <td>Dave</td>
+                                  <td>53275535</td>
+                                  <td>20 May 2017</td>
+                                  <td>Dave</td>
+                                  <td>Dave</td>
+                                  <td>53275535</td>
+                                  <td>20 May 2017</td>
+                                  <td><label class="badge badge-warning">In progress</label></td>
+                                  <td><label class="badge badge-outline-success">Edit</label></td>
+                                  <td><label class="badge badge-outline-danger">Delete</label></td>
+                                  <td><label class="badge badge-outline-warning">View</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- pagination -->
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <p class="m-0 text-secondary" id="pagination-info">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+                        <ul class="pagination m-0 ms-auto" id="pagination">
+                            <!-- <li class="page-item disabled">
+                              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                prev
+                              </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            <li class="page-item">
+                              <a class="page-link" href="#">
+                                next
+                              </a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

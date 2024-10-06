@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Form elements </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <!-- show the message -->
+                   @* <% if (message) { %>
+                    <span class="text-success"> <%= message %></span>
+                    <% } %> *@
+                    <h4 class="card-title">Deatails Add</h4>
+                    <p class="card-description"> Table</p>
+                    <form class="forms-sample" method="post" action="/backend/category-updated">
+                        <div class="form-group row">
+                            <label for="" class="col-sm-3 col-form-label">Category</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="category" value="<%= data1%>" placeholder="category">
+                               @* <% if (errors && errors.category) { %>
+                                <span class="text-danger" id="validation"> <%= errors.category.msg %></span>
+                                <% } %>  *@
+                            </div>
+                        </div>
+                        <input type="hidden" name="verify" value="true">
+                        <input type="hidden" name="cateId" value="" id="cate_Id">
+                        <button type="submit" class="btn btn-primary mr-2">Updated</button>
+                        <button type="submit" class="btn btn-success mr-2" id="view">View</button>
+                        <button class="btn btn-dark" id="cancel">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

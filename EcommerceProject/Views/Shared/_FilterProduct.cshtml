@@ -1,0 +1,82 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<!-- Main Content Area with Filter and Products -->
+<div class="row">
+    <!-- Filter Sidebar -->
+    <div class="col-md-3">
+        <h5 class="mb-4">Filter Products</h5>
+
+        <!-- Categories Filter -->
+        <div class="mb-4">
+            <h6>Categories</h6>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <input type="checkbox" class="form-check-input me-2" id="category1" /> Electronics
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" class="form-check-input me-2" id="category2" /> Fashion
+                </li>
+                <li class="list-group-item">
+                    <input type="checkbox" class="form-check-input me-2" id="category3" /> Home Appliances
+                </li>
+            </ul>
+        </div>
+
+        <!-- Price Filter -->
+        <div class="mb-4">
+            <h6>Price Range</h6>
+            <form>
+                <div class="form-group mb-2">
+                    <input type="text" class="form-control" placeholder="Min Price" />
+                </div>
+                <div class="form-group mb-2">
+                    <input type="text" class="form-control" placeholder="Max Price" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Apply</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Listing Section (Placeholder) -->
+    <div class="col-md-9">
+        <h5 class="mb-4">Products</h5>
+        <div class="row">
+            <!-- Static Product Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="/images/products//pic4.jpg" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Sample Product</h5>
+                        <p class="card-text">$99.99</p>
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="/images/products//pic4.jpg" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Sample Product</h5>
+                        <p class="card-text">$99.99</p>
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="/images/products//pic4.jpg" class="card-img-top" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Sample Product</h5>
+                        <p class="card-text">$99.99</p>
+                        <a href="#" class="btn btn-primary">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+            <!-- More Product Cards... -->
+        </div>
+    </div>
+</div>

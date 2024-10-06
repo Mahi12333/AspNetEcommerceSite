@@ -1,0 +1,39 @@
+﻿@page
+@model ResendEmailConfirmationModel
+
+@{
+    ViewData["Title"] = "Resend Email Confirmation";
+}
+
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 15px;">
+        <!-- Card Header -->
+        <div class="card-header bg-primary bg-gradient py-3 text-center" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            <h3 class="text-white mb-0">@ViewData["Title"]</h3>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body">
+            <h5 class="text-secondary text-center mb-4" style="font-family: 'Poppins', sans-serif;">Enter your email</h5>
+            <hr />
+            <form method="post">
+                <!-- Validation Summary -->
+                <div asp-validation-summary="All" class="text-danger mb-3" role="alert"></div>
+
+                <!-- Email Input Field -->
+                <div class="form-floating mb-4">
+                    <input asp-for="Input.Email" class="form-control shadow-sm rounded-pill" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email">Email Address</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <!-- Resend Button -->
+                <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm rounded-pill">Resend</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
