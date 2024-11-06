@@ -5,24 +5,15 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:10547",
-      "sslPort": 44335
+      "sslPort": 0 // Set sslPort to 0 if you want to avoid HTTPS
     }
   },
   "profiles": {
-    "http": {
+    "EcommerceProject": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5115",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7056;http://localhost:5115",
+      "applicationUrl": "http://localhost:5115", // Define HTTP
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

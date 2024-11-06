@@ -1,9 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUserModel> UserManager
 @{
+    var currentUser = await UserManager.GetUserAsync(User);
 }
-
 
 <nav class="navbar p-0 fixed-top d-flex flex-row">
     <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
@@ -21,18 +20,11 @@
             </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-            <!-- <li class="nav-item  d-none d-lg-block">
-              <a class="nav-link btn btn-success create-new-button" href="/backend/login">Login</a>
-            </li>  -->
-            <!-- <li class="nav-item  d-none d-lg-block">
-              <a class="nav-link btn btn-success create-new-button" href="#">Registration</a>
-            </li>
-             -->
             <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                     <div class="navbar-profile">
                         <img class="img-xs rounded-circle" src="/backend/assets/images/faces/face15.jpg" alt="">
-                        <p class="mb-0 d-none d-sm-block navbar-profile-name">Mahitosh</p>
+                        <p class="mb-0 d-none d-sm-block navbar-profile-name">@currentUser?.UserName</p>
                         <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                     </div>
                 </a>
@@ -49,17 +41,18 @@
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item" href="/logout">
-                        <div class="preview-thumbnail">
-                            <div class="preview-icon bg-dark rounded-circle">
-                                <i class="mdi mdi-logout text-danger"></i>
+                    <form asp-action="Logout" asp-controller="Authentication" method="post" style="display: inline;">
+                        <button type="submit" class="dropdown-item preview-item" style="background: none; border: none; padding: 0;">
+                            <div class="preview-thumbnail">
+                                <div class="preview-icon bg-dark rounded-circle">
+                                    <i class="mdi mdi-logout text-danger"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="preview-item-content">
-                            <p class="preview-subject mb-1">Log out</p>
-                        </div>
-                    </a>
-
+                            <div class="preview-item-content">
+                                <p class="preview-subject mb-1">Log out</p>
+                            </div>
+                        </button>
+                    </form>
                 </div>
             </li>
         </ul>

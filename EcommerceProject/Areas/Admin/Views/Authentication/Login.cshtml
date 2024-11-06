@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LoginVM
+@{
     Layout = null; // Disable layout for login page
 }
 
@@ -24,25 +25,33 @@
                 <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
                     <div class="card col-lg-4 mx-auto">
                         <div class="card-body px-5 py-5">
-                            <!-- Display response message here -->
-                            <div id="responseMessage" style="margin-top: 15px;"></div>
+                            <!-- Display error message if any -->
+                            @if (ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert alert-danger">
+                                    @ViewBag.ErrorMessage
+                                </div>
+                            }
+
                             <h3 class="card-title text-left mb-3">Login</h3>
-                            <form onsubmit="formSubmit(event)">
+                            <form asp-action="LoginSubmit" method="post" asp-controller="Authentication">
+                                @Html.AntiForgeryToken()
                                 <div class="form-group">
-                                    <label>Username or email *</label>
-                                    <input type="text" class="form-control p_input" required id="email">
+                                    <label asp-for="Email">Username or email *</label>
+                                    <input asp-for="Email" class="form-control p_input" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label>Password *</label>
-                                    <input type="password" class="form-control p_input" required id="password"> <!-- Changed to password type -->
+                                    <label asp-for="Password">Password *</label>
+                                    <input asp-for="Password" class="form-control p_input" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
                                 <div class="form-group d-flex align-items-center justify-content-between">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input"> Remember me
-                                        </label>
-                                    </div>
-                                    <a href="/backend/send_mail_resetpass" class="forgot-pass">Forgot password</a>
+                                    @* <div class="form-check"> *@
+                                    @*     <input asp-for="RememberMe" class="form-check-input" /> *@
+                                    @*     <label class="form-check-label" for="RememberMe">Remember me</label> *@
+                                    @* </div> *@
+                                    <a href="@Url.Action("sendEmail", "Authentication")" class="forgot-pass">Forgot password?</a>
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
@@ -51,11 +60,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- row ends -->
         </div>
-        <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->

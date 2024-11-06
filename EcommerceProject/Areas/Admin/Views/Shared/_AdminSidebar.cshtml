@@ -28,11 +28,11 @@
             <span class="nav-link">Navigation</span>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link" href="/backend/">
+            <a class="nav-link" href="@Url.Action("Dashboard", "Home")">
                 <span class="menu-icon">
                     <i class="mdi mdi-speedometer"></i>
                 </span>
-                <span class="menu-title">Dashboard</span>
+                <span class="menu-title">Dashboards</span>
             </a>
         </li>
         <li class="nav-item menu-items">
@@ -45,14 +45,14 @@
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="/backend/add-user">Create User</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="/backend/user-table">User List</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create", "User")">Create User</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "User")">User List</a></li>
                 </ul>
             </div>
         </li>
 
         <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#audth" aria-expanded="false" aria-controls="">
+            <a class="nav-link" data-toggle="collapse" href="#audth" aria-expanded="false" aria-controls="audth">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -61,14 +61,14 @@
             </a>
             <div class="collapse" id="audth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="/backend/add-category">Create Category</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="/backend/category-table">Category List</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create", "Category")">Create Category</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Category")">Category List</a></li>
                 </ul>
             </div>
         </li>
 
         <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#audthd" aria-expanded="false" aria-controls="">
+            <a class="nav-link" data-toggle="collapse" href="#audthd" aria-expanded="false" aria-controls="audthd">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -77,14 +77,14 @@
             </a>
             <div class="collapse" id="audthd">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="/backend/add-subcategory">Create SubCategory</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="/backend/subcategory-table">SubCategory List</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create", "SubCategory")">Create SubCategory</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "SubCategory")">SubCategory List</a></li>
                 </ul>
             </div>
         </li>
 
         <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#audthde" aria-expanded="false" aria-controls="">
+            <a class="nav-link" data-toggle="collapse" href="#audthde" aria-expanded="false" aria-controls="audthde">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -93,36 +93,36 @@
             </a>
             <div class="collapse" id="audthde">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="/backend/add-product">Create Product</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="/backend/product-table">Product List</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Create", "Product")">Create Product</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="@Url.Action("Index", "Product")">Product List</a></li>
                 </ul>
             </div>
         </li>
 
-        <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-                <span class="menu-icon">
-                    <i class="mdi mdi-table-large"></i>
-                </span>
-                <span class="menu-title">Tables</span>
-            </a>
-        </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-                <span class="menu-icon">
-                    <i class="mdi mdi-chart-bar"></i>
-                </span>
-                <span class="menu-title">Product Add</span>
-            </a>
-        </li>
-        <li class="nav-item menu-items">
-            <a class="nav-link" href="#">
-                <span class="menu-icon">
-                    <i class="mdi mdi-contacts"></i>
-                </span>
-                <span class="menu-title">Product Update</span>
-            </a>
-        </li>
+        @* <li class="nav-item menu-items"> *@
+        @*     <a class="nav-link" href="#"> *@
+        @*         <span class="menu-icon"> *@
+        @*             <i class="mdi mdi-table-large"></i> *@
+        @*         </span> *@
+        @*         <span class="menu-title">Tables</span> *@
+        @*     </a> *@
+        @* </li> *@
+        @* <li class="nav-item menu-items"> *@
+        @*     <a class="nav-link" href="#"> *@
+        @*         <span class="menu-icon"> *@
+        @*             <i class="mdi mdi-chart-bar"></i> *@
+        @*         </span> *@
+        @*         <span class="menu-title">Product Add</span> *@
+        @*     </a> *@
+        @* </li> *@
+        @* <li class="nav-item menu-items"> *@
+        @*     <a class="nav-link" href="#"> *@
+        @*         <span class="menu-icon"> *@
+        @*             <i class="mdi mdi-contacts"></i> *@
+        @*         </span> *@
+        @*         <span class="menu-title">Product Update</span> *@
+        @*     </a> *@
+        @* </li> *@
         <li class="nav-item menu-items">
             <a class="nav-link" href="#">
                 <span class="menu-icon">

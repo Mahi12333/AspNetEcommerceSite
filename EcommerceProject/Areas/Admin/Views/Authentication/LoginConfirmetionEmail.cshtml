@@ -1,55 +1,63 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model OtpConfirmationVM
+
 @{
-    Layout = null;
+    Layout = null; // Disable layout for login page
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Corona Admin</title>
-    <!-- plugins:css -->
+    <title>OTP Verification</title>
     <link rel="stylesheet" href="~/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/assets/vendors/css/vendor.bundle.base.css">
-    <!-- Add Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- endinject -->
-    <!-- Layout styles -->
     <link rel="stylesheet" href="~/assets/css/style.css">
-    <!-- End layout styles -->
     <link rel="shortcut icon" href="~/assets/images/favicon.png" />
     <style>
-        .full-page-wrapper {
+        .otp-input-wrapper {
             display: flex;
-            justify-content: center;
-            height: 600px;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
-        .from-control {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background-color: transparent;
+            color: #fff;
+            margin: 0 5px;
         }
 
-        .back-button {
-            position: relative;
-            padding-left: 25px; /* Add padding to avoid text overlap */
-        }
-
-            .back-button::before {
-                content: '';
-                position: absolute;
-                left: 10px; /* Adjust as needed */
-                top: 50%;
-                transform: translateY(-50%); /* Center the arrow vertically */
-                border: solid transparent; /* Creates an arrow shape */
-                border-width: 5px; /* Adjust size */
-                border-right-color: white; /* Change this to match your button text color */
+            .otp-input:focus {
+                border-color: #007bff;
+                outline: none;
             }
+
+        /* Submit button styling */
+        .btn-primary {
+            width: 100%;
+            background-color: #007bff;
+            border: none;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        /* Other styles */
+        .sign-up a {
+            color: #fff;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body style="background-color: rgba(37, 139, 146, 0.301);">
@@ -58,38 +66,63 @@
             <div class="row w-100 m-0">
                 <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
                     <div class="card col-lg-4 mx-auto">
-                        <div class="card-body px-5 py-5" style="display: flex;
-              flex-direction: column;
-              gap: 10px;">
-                            <!-- Display response message here -->
-                            <div id="responseMessage" style="margin-top: 105px;"></div>
-                            <h3 class="card-title text-left mb-3" style="text-align: center;">Verify Your Account</h3>
-                            <form onsubmit="formSubmit(event)" class="from-control">
-                                <div class="text-center" style="margin-left: 3rem;">
-                                    <input type="hidden" id="token" value="<%= token %>">
-                                    <input type="hidden" name="verify" value="true" id="verify">
-                                    <button type="submit" class="btn btn-primary btn-block enter-btn">Submit</button>
+                        <div class="card-body px-5 py-5">
+                            <div id="responseMessage">
+                                @if (TempData["ErrorMessage"] != null)
+                                {
+                                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                                }
+                            </div>
+                            <h3 class="card-title text-center">Verify Your Account</h3>
+                            <form asp-action="VerifyOtp" method="post" asp-controller="Authentication" id="otpForm">
+                                <div class="form-group">
+                                    <p>An OTP has been sent to your email: @Model.userEmail</p>
+                                    <div class="otp-input-wrapper">
+                                        <input type="text" maxlength="1" class="otp-input" id="otp1" oninput="moveNext(1)">
+                                        <input type="text" maxlength="1" class="otp-input" id="otp2" oninput="moveNext(2)">
+                                        <input type="text" maxlength="1" class="otp-input" id="otp3" oninput="moveNext(3)">
+                                        <input type="text" maxlength="1" class="otp-input" id="otp4" oninput="moveNext(4)">
+                                    </div>
+                                    <!-- Hidden input to store the full OTP -->
+                                    <input type="hidden" id="otp" name="otp" />
+                                    <input type="hidden" name="userEmail" value="@Model.userEmail" />
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block enter-btn">Submit OTP</button>
                                 </div>
                             </form>
+                            <!-- Resend OTP Button -->
+                            <div class="text-center mt-3">
+                                @* <a href="@Url.Action("ResendOtp", "Authentication")" class="btn btn-secondary">Resend OTP</a> *@
+                                <form asp-action="ResendOtp" method="post" asp-controller="Authentication">
+                                    <input type="hidden" name="userEmail" value="@Model.userEmail" />
+                                    <button type="submit">Resend OTP</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- content-wrapper ends -->
             </div>
-            <!-- row ends -->
         </div>
-        <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
     <script src="~/assets/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- inject:js -->
     <script src="~/assets/js/off-canvas.js"></script>
-    <script src="~/assets/js/hoverable-collapse.js"></script>
     <script src="~/assets/js/misc.js"></script>
-    <script src="~/assets/js/settings.js"></script>
-    <script src="~/assets/js/todolist.js"></script>
-    <!-- endinject -->
+
+    <script>
+        // Move to next OTP field automatically after input
+        function moveNext(currentIndex) {
+            const currentField = document.getElementById('otp' + currentIndex);
+            if (currentField.value.length === 1 && currentIndex < 4) {
+                document.getElementById('otp' + (currentIndex + 1)).focus();
+            }
+            // Concatenate all OTP inputs into the hidden field
+            let otpValue = '';
+            for (let i = 1; i <= 4; i++) {
+                otpValue += document.getElementById('otp' + i).value;
+            }
+            document.getElementById('otp').value = otpValue;
+        }
+    </script>
 </body>
 </html>

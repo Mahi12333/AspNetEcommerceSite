@@ -1,103 +1,116 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CreateUserVM
 @{
+    ViewData["Title"] = "Add User Details";
 }
 
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Form elements </h3>
+        <h3 class="page-title"> Add User Details </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                <li class="breadcrumb-item active" aria-current="page">Add User</li>
             </ol>
         </nav>
     </div>
     <div class="row">
-
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <!-- show the message -->
-                    <div id="responseMessage" style="margin-top: 15px;"></div>
-                    <h4 class="card-title">Deatails Add</h4>
-                    <p class="card-description"> Table</p>
-                    <form class="forms-sample">
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <h4 class="card-title">User Details</h4>
+                    <p class="card-description"> Fill out the form below </p>
+
+                    <!-- Form Start -->
+                    <form asp-action="Create" asp-controller="User" method="post" class="forms-sample">
+                        <!-- Role Selection -->
                         <div class="form-group row">
-                            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Role</label>
+                            <label class="col-sm-3 col-form-label">Role</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="exampleInputUsername2" name="role">
-                                    <option>Select One</option>
-                                  @*  <% data.roles.forEach(role=> { %>
-                                    <option value="<%= role._id %>" id="role">
-                                        <%= role.role_name %>
-                                    </option>
-                                    <% }); %> *@
+                                <select asp-for="RoleId" class="form-control" asp-items="Model.Roles">
+                                    <option value="">Select a Role</option>
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Permission Selection -->
                         <div class="form-group row">
-                            <label for="exampleInputConfirmPassword2" class="col-sm-3 col-form-label">Permission</label>
+                            <label class="col-sm-3 col-form-label">Permissions</label>
                             <div class="col-sm-9">
-                                <div class="form-control" style="display: flex; gap:10px;">
-                                 @*   <% data.permissions.forEach(permission=> {%>
-                                    <label>
-                                        <input type="checkbox" name="permission[]" class="permission-checkbox"
-                                               value="<%= permission._id %>">
-                                        <%= permission.role_name.toUpperCase() %>
-                                    </label>
-                                    <% }); %>
-                                    <br><br>  *@
+                                <div class="" style="display: flex; flex-wrap: wrap; gap:10px;">
+                                    @foreach (var permission in Model.Permissions)
+                                    {
+                                        <div class="form-check form-check-inline" style="display: flex; justify-content: center;">
+                                            <input type="checkbox" name="SelectedPermissions" value="@permission.Value" class="form-check-input" />
+                                            <label class="form-check-label">@permission.Text</label>
+                                        </div>
+                                    }
                                 </div>
                             </div>
-
                         </div>
 
+                        <!-- Username -->
                         <div class="form-group row">
-                            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">UserName</label>
+                            <label class="col-sm-3 col-form-label">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="exampleInputusername" placeholder="username">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Email</label>
-                            <div class="col-sm-9">
-                                <input type="email" class="form-control" id="exampleInputemail" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Mobile</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="exampleInputMobile"
-                                       placeholder="Mobile number">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="exampleInp" class="col-sm-3 col-form-label">Password</label>
-                            <div class="col-sm-9">
-                                <input type="password" class="form-control" id="exampleInputPassword2"
-                                       placeholder="Password">
+                                <input asp-for="UserName" class="form-control" placeholder="Username" />
                             </div>
                         </div>
 
+                        <!-- Email -->
                         <div class="form-group row">
-                            <label for="exampleInput" class="col-sm-3 col-form-label">
-                                Confirm
-                                Password
-                            </label>
+                            <label class="col-sm-3 col-form-label">Email</label>
                             <div class="col-sm-9">
-                                <input type="password" class="form-control" id="ConfirmPassword" placeholder="CPassword">
+                                <input asp-for="Email" class="form-control" placeholder="Email" />
                             </div>
                         </div>
 
+                        <!-- Mobile -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Mobile</label>
+                            <div class="col-sm-9">
+                                <input asp-for="Mobile" class="form-control" placeholder="Mobile number" />
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Password</label>
+                            <div class="col-sm-9">
+                                <input asp-for="Password" class="form-control" placeholder="Password" type="password" />
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Confirm Password</label>
+                            <div class="col-sm-9">
+                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" type="password" />
+                            </div>
+                        </div>
+
+                        <!-- Form Buttons -->
                         <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button type="submt" id="view" class="btn btn-success mr-2">View</button>
-                        <button class="btn btn-dark">Cancel</button>
+                        <a asp-action="Index" asp-controller="User" class="btn btn-success mr-2">View</a>
+                        <button type="reset" class="btn btn-dark">Cancel</button>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

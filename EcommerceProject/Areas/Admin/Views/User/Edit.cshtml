@@ -1,18 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EditUserVM
 @{
+    ViewData["Title"] = "Edit User Details";
 }
-
-
 
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Form elements </h3>
+        <h3 class="page-title">Edit User Details</h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                <li class="breadcrumb-item active" aria-current="page">Edit User</li>
             </ol>
         </nav>
     </div>
@@ -20,62 +17,79 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <!-- show the message -->
-                    <div id="responseMessage" style="margin-top: 15px;"></div>
-                    <h4 class="card-title">Deatails Add</h4>
-                    <p class="card-description"> Table</p>
-                    <form class="forms-sample" id="my-form">
+                    <!-- Show any response messages -->
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+                    <h4 class="card-title">User Details Update</h4>
+                    <p class="card-description">Edit user information below</p>
+
+                    <!-- Start form -->
+                    <form asp-action="EditSubmit" asp-controller="User" asp-area="Admin" method="post" class="forms-sample" id="edit-user-form">
+                        <input type="hidden" asp-for="UserId" />
+
+                        <!-- Role Selection -->
                         <div class="form-group row">
-                            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Role</label>
+                            <label for="role" class="col-sm-3 col-form-label">Role</label>
                             <div class="col-sm-9">
-                                <select class="form-control" id="exampleInputUsername2" name="role">
-                                    <option>Select One</option>
-                                    @* <% data.roles.forEach(role=> { %>
-                                    <option value="<%= role._id %>" id="role" <% if (role._id === parseInt(data.user.role)) { %> selected   <% } %>>
-                                    <%= role.role_name %>
-                                    </option>
-                                    <% }); %> *@
+                                <select asp-for="RoleId" class="form-control" asp-items="Model.Roles">
+                                    <option>Select a Role</option>
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Permissions -->
                         <div class="form-group row">
-                            <label for="exampleInputConfirmPassword2" class="col-sm-3 col-form-label">Permission</label>
+                            <label for="permissions" class="col-sm-3 col-form-label">Permissions</label>
                             <div class="col-sm-9">
-                                <div class="form-control" style="display: flex; gap:10px;">
-                                    @*  <% data.permissions.forEach(permission=> {%>
-                                    <label>
-                                    <input type="checkbox" name="permission[]" class="permission-checkbox"
-                                    value="<%= permission._id %>"  <% if (data.user.permission.includes(permission._id)) { %> checked <% } %>>
-                                    <%= permission.role_name.toUpperCase() %>
-                                    </label>
-                                    <% }); %> *@
-                                    <br><br>
+                                <div style="display: flex; gap:10px; flex-wrap: wrap;">
+                                    @foreach (var permission in Model.Permissions)
+                                    {
+                                        <div class="form-check form-check-inline">
+                                            <input type="checkbox" name="SelectedPermissions" class="form-check-input" value="@permission.Value"
+                                            @(Model.SelectedPermissions.Contains(int.Parse(permission.Value)) ? "checked" : "") />
+                                            <label class="form-check-label">@permission.Text</label>
+                                        </div>
+                                    }
                                 </div>
                             </div>
-
                         </div>
 
+                        <!-- Username -->
                         <div class="form-group row">
-                            <label for="exampleInputEmail2" class="col-sm-3 col-form-label">UserName</label>
+                            <label for="username" class="col-sm-3 col-form-label">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="exampleInputusername" value="" placeholder="username" name="username">
+                                <input asp-for="UserName" class="form-control" placeholder="Username" />
                             </div>
                         </div>
+
+                        <!-- Mobile -->
                         <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Mobile</label>
+                            <label for="mobile" class="col-sm-3 col-form-label">Mobile</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="exampleInputMobile"
-                                       placeholder="Mobile number" value="" name="mobile">
+                                <input asp-for="Mobile" class="form-control" placeholder="Mobile number" />
                             </div>
                         </div>
-                        <input type="hidden" name="userId" value="">
+
+                        <!-- Update and Cancel buttons -->
+
                         <button type="submit" class="btn btn-primary mr-2">Update</button>
-                        <!-- <a href="#"> <button type="" class="btn btn-success mr-2">View</button></a> -->
-                        <button class="btn btn-dark">Cancel</button>
+                        <a asp-action="Index" asp-controller="User" class="btn btn-dark">Cancel</a>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
