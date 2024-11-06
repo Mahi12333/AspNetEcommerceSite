@@ -7,15 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\IRepository\**" />
+    <Content Remove="Repositories\IRepository\**" />
+    <EmbeddedResource Remove="Repositories\IRepository\**" />
+    <None Remove="Repositories\IRepository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\Admin\Services\" />
     <Folder Include="Areas\Customer\Services\" />
     <Folder Include="Areas\Customer\ViewModels\" />
     <Folder Include="DTOs\" />
     <Folder Include="Migrations\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Services\" />
-    <Folder Include="Repositories\IRepository\" />
-    <Folder Include="Repositories\Repository\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup> 
 
@@ -28,6 +32,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
   </ItemGroup>
 
 </Project>
