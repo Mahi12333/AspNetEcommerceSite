@@ -85,7 +85,7 @@ namespace EcommerceProject
             app.UseRouting();
             // For Pagination
             app.UseDeveloperExceptionPage();
-
+            DotNetEnv.Env.Load();
 
             // Authentication & Authorization Middleware
             app.UseAuthentication();  // Ensure authentication is added here
