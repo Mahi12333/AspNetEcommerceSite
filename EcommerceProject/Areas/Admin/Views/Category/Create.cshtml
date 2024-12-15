@@ -1,16 +1,18 @@
-﻿@*
+﻿@using EcommerceProject.Areas.Admin.Models
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
+
+@model CategoryModel
+
 
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Form elements </h3>
+        <h3 class="page-title"> Add Category Details </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                <li class="breadcrumb-item active" aria-current="page">Add Category</li>
             </ol>
         </nav>
     </div>
@@ -18,31 +20,55 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <!-- show the message -->
-                   @* <% if (message) { %>
-                    <span class="text-success"> <%= message %></span>
-                    <% } %> *@
-                    <h4 class="card-title">Deatails Add</h4>
-                    <p class="card-description"> Table</p>
-                    <form class="forms-sample" method="post" action="/backend/category-updated">
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <h4 class="card-title">Category Details</h4>
+                    <p class="card-description"> Fill out the form below </p>
+
+                    <!-- Form Start -->
+                    <form asp-action="Create" method="post" asp-controller="Category">
+                        @* @Html.AntiForgeryToken() *@
+                        <!-- Category Name -->
                         <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">Category</label>
+                            <label class="col-sm-3 col-form-label">Category Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="category" value="<%= data1%>" placeholder="category">
-                               @* <% if (errors && errors.category) { %>
-                                <span class="text-danger" id="validation"> <%= errors.category.msg %></span>
-                                <% } %>  *@
+                                <input asp-for="Name" class="form-control" placeholder="Enter category name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                         </div>
-                        <input type="hidden" name="verify" value="true">
-                        <input type="hidden" name="cateId" value="" id="cate_Id">
-                        <button type="submit" class="btn btn-primary mr-2">Updated</button>
-                        <button type="submit" class="btn btn-success mr-2" id="view">View</button>
-                        <button class="btn btn-dark" id="cancel">Cancel</button>
+
+                        <!-- Status -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Category Status</label>
+                            <div class="col-sm-9">
+                                <select asp-for="Status" class="form-control">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- Form Buttons -->
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <a asp-action="Index" asp-controller="User" class="btn btn-success mr-2">View</a>
+                        <a href="@Url.Action("Index", "Category", new { area = "Admin" })" class="btn btn-secondary">Cancel</a>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

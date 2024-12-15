@@ -49,5 +49,15 @@ namespace EcommerceProject.Repositories.Repository
                 await _context.SaveChangesAsync();
             }
         }
+
+        // Asynchronous method to get a role by user ID
+        public async Task<CustomRoleModel> GetRoleByUserIdAsync(string userId) // Return single role
+        {
+            var user = await _context.ApplicationUsers
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            return user?.Role;
+        }
     }
 }

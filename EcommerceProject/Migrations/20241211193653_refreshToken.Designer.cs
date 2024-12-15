@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241026143736_AddPermissionsAndUserPermissions")]
-    partial class AddPermissionsAndUserPermissions
+    [Migration("20241211193653_refreshToken")]
+    partial class refreshToken
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,17 @@ namespace EcommerceProject.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -96,26 +107,58 @@ namespace EcommerceProject.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = "3c323777-d891-420e-800a-035cb7562889",
+                            Id = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5ec7f727-913b-440a-b8bd-83d03db4adab",
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(6797),
+                            ConcurrencyStamp = "36f52ced-2f3b-4ca0-864e-792a4abbca76",
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(2874),
                             Email = "mahitoshgiri287@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEH6GsYkUUiSBY+t8Sf8DTu9/2CR3Wkai+sZzG8vajg4rPdKrR9a1JpnwYcXOFlEJ2w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBjwEyQqUqdn+8ype+mjQSG1gXm+RElU67JjfRNrSJskBUsyZ+wy0lBZt8Nce2Zx/Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8db8d7a6-25c4-4e61-90e2-a4d5405e88b4",
+                            RefreshToken = "SomeDummyTokenValue3543564",
+                            RoleId = "B993F718-51B6-4FBE-9F17-037FA1585827",
+                            SecurityStamp = "0811918d-bbf4-4268-b61e-4f2645459aaa",
                             Slug = "admin-user",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(6800),
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(2879),
                             UserName = "adminUser"
                         });
+                });
+
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.CategoryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.CustomRoleModel", b =>
@@ -158,26 +201,26 @@ namespace EcommerceProject.Migrations
                         new
                         {
                             Id = "B993F718-51B6-4FBE-9F17-037FA1585827",
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 302, DateTimeKind.Utc).AddTicks(3454),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 51, 942, DateTimeKind.Utc).AddTicks(8231),
                             Name = "Admin",
                             Slug = "admin",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 302, DateTimeKind.Utc).AddTicks(3455)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 51, 942, DateTimeKind.Utc).AddTicks(8232)
                         },
                         new
                         {
                             Id = "C0CF4D0F-9BC6-4B70-BAED-2CA10F1AAA30",
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 302, DateTimeKind.Utc).AddTicks(3458),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 51, 942, DateTimeKind.Utc).AddTicks(8238),
                             Name = "Subadmin",
                             Slug = "subadmin",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 302, DateTimeKind.Utc).AddTicks(3458)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 51, 942, DateTimeKind.Utc).AddTicks(8239)
                         },
                         new
                         {
                             Id = "5482176B-6706-476D-A273-1EA9AD5AD217",
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 302, DateTimeKind.Utc).AddTicks(3461),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 51, 942, DateTimeKind.Utc).AddTicks(8246),
                             Name = "Supersubadmin",
                             Slug = "supersubadmin",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 302, DateTimeKind.Utc).AddTicks(3461)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 51, 942, DateTimeKind.Utc).AddTicks(8246)
                         });
                 });
 
@@ -237,116 +280,274 @@ namespace EcommerceProject.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7132),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3055),
                             PermissionName = "Create Product",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7133)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3056)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7139),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3066),
                             PermissionName = "Edit Product",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7139)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3067)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7140),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3070),
                             PermissionName = "Delete Product",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7140)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3071)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7141),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3074),
                             PermissionName = "View Orders",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7141)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3075)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7142),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3077),
                             PermissionName = "Manage Users",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7142)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3078)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7143),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3098),
                             PermissionName = "Access Admin Dashboard",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7144)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3099)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7145),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3101),
                             PermissionName = "Edit User",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7146)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3102)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7146),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3192),
                             PermissionName = "Delete User",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7147)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3193)
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7148),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3196),
                             PermissionName = "Create Category",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7148)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3197)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7149),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3203),
                             PermissionName = "Edit Category",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7149)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3204)
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7150),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3206),
                             PermissionName = "Delete Category",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7150)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3207)
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7151),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3210),
                             PermissionName = "Create Subcategory",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7151)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3211)
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7152),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3213),
                             PermissionName = "Edit Subcategory",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7152)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3214)
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7153),
+                            CreatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3217),
                             PermissionName = "Delete Subcategory",
-                            UpdatedAt = new DateTime(2024, 10, 26, 14, 37, 35, 362, DateTimeKind.Utc).AddTicks(7154)
+                            UpdatedAt = new DateTime(2024, 12, 11, 19, 36, 52, 119, DateTimeKind.Utc).AddTicks(3218)
                         });
+                });
+
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.ProductModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ImageUrls")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Sizes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SubCategoryId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.SubCategoryModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.UserPermissionModel", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.HasKey("UserId", "PermissionId");
 
                     b.HasIndex("PermissionId");
 
                     b.ToTable("UserPermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 8
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 11
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 12
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            UserId = "9a19a84f-b911-48bf-bc90-ff7a0d972e22",
+                            PermissionId = 14
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -455,6 +656,47 @@ namespace EcommerceProject.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ApplicationUserModel", b =>
+                {
+                    b.HasOne("EcommerceProject.Areas.Admin.Models.CustomRoleModel", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.ProductModel", b =>
+                {
+                    b.HasOne("EcommerceProject.Areas.Admin.Models.CategoryModel", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EcommerceProject.Areas.Admin.Models.SubCategoryModel", "SubCategory")
+                        .WithMany("Products")
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.SubCategoryModel", b =>
+                {
+                    b.HasOne("EcommerceProject.Areas.Admin.Models.CategoryModel", "Category")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.UserPermissionModel", b =>
                 {
                     b.HasOne("EcommerceProject.Areas.Admin.Models.PermissionModel", "Permission")
@@ -530,9 +772,21 @@ namespace EcommerceProject.Migrations
                     b.Navigation("UserPermissions");
                 });
 
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.CategoryModel", b =>
+                {
+                    b.Navigation("Products");
+
+                    b.Navigation("SubCategories");
+                });
+
             modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.PermissionModel", b =>
                 {
                     b.Navigation("UserPermissions");
+                });
+
+            modelBuilder.Entity("EcommerceProject.Areas.Admin.Models.SubCategoryModel", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,55 +1,125 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model CategoryPaginationVM
 
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Basic Tables </h3>
+        <h3 class="page-title"> Category Management </h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Basic tables</li>
+                <li class="breadcrumb-item active" aria-current="page">Category List</li>
             </ol>
         </nav>
     </div>
+
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <!-- Display response message here -->
-                    <div id="responseMessage" style="margin-top: 15px;"></div>
-                    <h4 class="card-title">Category Table</h4>
-                    <a href="/backend/add-category">
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <h4 class="card-title">Category List</h4>
+                    <a href="@Url.Action("Create", "Category", new { area = "Admin" })">
                         <button class="card-description badge badge-outline-warning" style="background-color: #000; margin-bottom:1rem">
                             Add Category
                         </button>
                     </a>
+
+                    <!-- Entries and Search -->
+                    <div class="d-flex align-items-center justify-content-between" style="margin-bottom:1rem">
+                        <div class="ms-auto text-secondary" id="search">
+                            Search:
+                            <input type="text" id="searchInput" value="@ViewBag.Search" placeholder="Search..." onkeyup="performSearch()" />
+                            <button onclick="performSearch()">Search</button>
+                        </div>
+                    </div>
+
+                    <!-- Category Table -->
                     <div class="table-responsive">
-                        <table class="table" id="userTable">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th>Category No.</th>
                                     <th>Category Name</th>
                                     <th>Status</th>
-                                    <th>Updated</th>
-                                    <th>Delete</th>
-                                    <th>View</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody">
-                            <td>1</td>
-                            <td>Mahitosh</td>
-                            <td>Mahi</td>
-                            <td>Mah</td>
-                            <td>Mark</td>
+                            <tbody>
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <tr>
+                                        <td>@category.Id</td>
+                                        <td>@category.Name</td>
+                                        <td>@category.Status</td>
+                                        <td>@category.UpdatedAt?.ToString("MM/dd/yyyy")</td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "Category", new { area = "Admin", id = category.Id })" class="btn btn-sm btn-warning">Edit</a>
+                                            <form asp-action="Delete" asp-controller="Category" asp-area="Admin" method="post" style="display:inline;">
+                                                <input type="hidden" name="id" value="@category.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
 
-                </div>
+                    <!-- Pagination -->
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <p class="m-0 text-secondary">
+                            Showing @Model.PageSize entries per page, Page @Model.Page of @((Model.TotalCount + Model.PageSize - 1) / Model.PageSize)
+                        </p>
+                        <ul class="pagination m-0 ms-auto">
+                            <!-- Previous Button -->
+                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                <a class="page-link" href="javascript:void(0);" onclick="changePage(@(Model.Page - 1))">Prev</a>
+                            </li>
+
+                            <!-- Page Numbers -->
+                            @for (int pageIndex = 1; pageIndex <= (Model.TotalCount + Model.PageSize - 1) / Model.PageSize; pageIndex++)
+                            {
+                                <li class="page-item @(Model.Page == pageIndex ? "active" : "")">
+                                    <a class="page-link" href="javascript:void(0);" onclick="changePage(@pageIndex)">@pageIndex</a>
+                                </li>
+                            }
+
+                            <!-- Next Button -->
+                            <li class="page-item @(Model.Page >= (Model.TotalCount + Model.PageSize - 1) / Model.PageSize ? "disabled" : "")">
+                                <a class="page-link" href="javascript:void(0);" onclick="changePage(@(Model.Page + 1))">Next</a>
+                            </li>
+                        </ul>
+                    </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function changePage(page) {
+            const searchQuery = document.getElementById('searchInput').value;
+            window.location.href = `?page=${page}&pageSize=@Model.PageSize&search=${searchQuery}`;
+        }
+
+        function performSearch() {
+            const searchQuery = document.getElementById('searchInput').value;
+            window.location.href = `?page=1&pageSize=@Model.PageSize&search=${searchQuery}`;
+        }
+    </script>
+}

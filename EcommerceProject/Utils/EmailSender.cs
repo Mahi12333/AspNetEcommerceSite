@@ -22,12 +22,13 @@ namespace EcommerceProject.Utils
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             // Fetch SMTP settings from configuration
-            var smtpHost = _config["Smtp:Host"];
-            var smtpPort = int.Parse(_config["Smtp:Port"]);
-            var enableSsl = bool.Parse(_config["Smtp:EnableSSL"]);
-            var emailFrom = _config["Smtp:EmailFrom"];
-            var username = _config["Smtp:Username"];
-            var password = _config["Smtp:Password"];
+            var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST");
+            var smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT")); // Use SMTP_PORT here
+            var enableSsl = bool.Parse(Environment.GetEnvironmentVariable("SMTP_ENABLESSL"));
+            var emailFrom = Environment.GetEnvironmentVariable("SMTP_EMAILFROM");
+            var username = Environment.GetEnvironmentVariable("SMTP_USERNAME");
+            var password = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+
 
             // Create a new SmtpClient instance
             using (var client = new SmtpClient(smtpHost, smtpPort))

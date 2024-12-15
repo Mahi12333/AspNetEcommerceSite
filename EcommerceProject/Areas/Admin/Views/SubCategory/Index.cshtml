@@ -1,5 +1,124 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model SubCategoryPaginationVM
 @{
+    ViewData["Title"] = "SubCategory List";
+}
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> SubCategory Management </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                <li class="breadcrumb-item active" aria-current="page">SubCategory List</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <h4 class="card-title">Category List</h4>
+                    <a href="@Url.Action("Create", "SubCategory", new { area = "Admin" })">
+                        <button class="card-description badge badge-outline-warning" style="background-color: #000; margin-bottom:1rem">
+                            Add SubCategory
+                        </button>
+                    </a>
+
+                    <!-- Entries and Search -->
+                    <div class="d-flex align-items-center justify-content-between" style="margin-bottom:1rem">
+                        <div class="ms-auto text-secondary" id="search">
+                            Search:
+                            <input type="text" id="searchInput" value="" placeholder="Search..." onkeyup="performSearch()" />
+                            <button onclick="performSearch()">Search</button>
+                        </div>
+                    </div>
+
+                    <!-- Category Table -->
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>SubCategory No.</th>
+                                    <th>Category Name</th>
+                                    <th>SubCategory Name</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var subCategory in Model.SubCategories)
+                                {
+                                    <tr>
+                                        <td>@subCategory.Id</td>
+                                        <td>@subCategory.Category?.Name</td>
+                                        <td>@subCategory.Name</td>
+                                        <td>@subCategory.Status</td>
+                                        <td>@subCategory.UpdatedAt?.ToString("MM/dd/yyyy")</td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@subCategory.Id" class="btn btn-warning btn-sm">Edit</a>
+                                            <form asp-action="Delete" method="post" style="display:inline;">
+                                                <input type="hidden" name="id" value="@subCategory.Id" />
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <p class="m-0 text-secondary">Showing @Model.PageSize entries per page, Page @Model.Page of @((Model.TotalCount + Model.PageSize - 1) / Model.PageSize)</p>
+                        <ul class="pagination m-0 ms-auto">
+                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                <a class="page-link" href="javascript:void(0);" onclick="changePage(@(Model.Page - 1))">Prev</a>
+                            </li>
+                            @for (int pageIndex = 1; pageIndex <= (Model.TotalCount + Model.PageSize - 1) / Model.PageSize; pageIndex++)
+                            {
+                                <li class="page-item @(Model.Page == pageIndex ? "active" : "")">
+                                    <a class="page-link" href="javascript:void(0);" onclick="changePage(@pageIndex)">@pageIndex</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.Page >= (Model.TotalCount + Model.PageSize - 1) / Model.PageSize ? "disabled" : "")">
+                                <a class="page-link" href="javascript:void(0);" onclick="changePage(@(Model.Page + 1))">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function changePage(page) {
+            const search = document.getElementById('searchInput').value;
+            window.location.href = `?page=${page}&pageSize=@Model.PageSize&search=${search}`;
+        }
+
+        function performSearch() {
+            const search = document.getElementById('searchInput').value;
+            window.location.href = `?page=1&pageSize=@Model.PageSize&search=${search}`;
+        }
+    </script>
 }
