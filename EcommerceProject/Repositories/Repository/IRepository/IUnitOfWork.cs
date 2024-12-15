@@ -4,7 +4,8 @@
     {
         IApplicationUserRepository ApplicationUserRepository { get; }
         IOtpRepository OtpRepository { get; }
-        Task CompleteAsync();
+        Task CompleteAsync();// both are same 
+        //Task SaveAsync(); // 
         void Save();
     }
 

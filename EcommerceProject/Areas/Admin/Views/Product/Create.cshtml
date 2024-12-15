@@ -1,134 +1,207 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
-
+@model ProductVM
 
 <div class="content-wrapper">
     <div class="page-header">
-        <h3 class="page-title"> Form elements </h3>
+        <h3 class="page-title">Create Product</h3>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Forms</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+                <li class="breadcrumb-item"><a href="#">Products</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Create</li>
             </ol>
         </nav>
     </div>
     <div class="row">
-
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <!-- show the message -->
-                    <div id="responseMessage" style="margin-top: 15px;"></div>
-                    <h4 class="card-title">Deatails Add</h4>
-                    <p class="card-description"> Table</p>
-                    <form class="forms-sample" id="my-form">
+                    <h4 class="card-title">Add Product</h4>
+                    <form method="post" enctype="multipart/form-data" asp-controller="Product">
+                        <!-- Category Dropdown -->
                         <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">Category</label>
+                            <label class="col-sm-3 col-form-label">Category</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="category" id="category">
-                                    <option value="">Select One</option>
-                                    <% data.category.forEach(category=> { %>
-                                    <option value="<%= category._id %>">
-                                        <%= category.category %>
-                                    </option>
-                                    <% }); %>
-
+                                <select id="category" name="CategoryId" class="form-control" required>
+                                    <option value="" disabled selected>Select Category</option>
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
                                 </select>
-                                <span class="text-danger" id="catvalidation"> </span>
                             </div>
                         </div>
-
+                        <!-- SubCategory Dropdown -->
                         <div class="form-group row">
-                            <label for="" class="col-sm-3 col-form-label">SubCategory</label>
+                            <label class="col-sm-3 col-form-label">SubCategory</label>
                             <div class="col-sm-9">
-                                <select class="form-control" name="subcategory" id="subcategory">
-                                    <option value="">Select One</option>
-
-                                    <option value=""></option>
-
+                                <select id="subCategory" name="SubCategoryId" class="form-control" required>
+                                    <option value="" disabled selected>Select SubCategory</option>
                                 </select>
-                                <span class="text-danger" id="subvalidation"> </span>
                             </div>
                         </div>
-
+                        <!-- Product Name -->
                         <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Name</label>
+                            <label class="col-sm-3 col-form-label">Product Name</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="exampleInputMobile" placeholder="product" autocomplete="off"
-                                       name="product">
-                                <span class="text-danger" id="produvalidation"> </span>
+                                <input type="text" class="form-control" name="Name" maxlength="100" required />
                             </div>
                         </div>
+                        <!-- Images -->
                         <div class="form-group row">
-                            <label for="exampleInputImages" class="col-sm-3 col-form-label">Images</label>
+                            <label class="col-sm-3 col-form-label">Images</label>
                             <div class="col-sm-9">
-                                <div class="choose-imagefile-wrap">
-                                    <div class="image-container" id="selectedImages"></div>
-                                    <input type="file" id="primaryInput" onchange="handleFileSelection()" multiple>
-                                    <input type="hidden" id="hiddenInput" value="0">
+                                <input type="file" name="ImageUrls" id="images" class="form-control" multiple />
+                                <div id="imagePreviews" class="mt-2"></div>
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Description</label>
+                            <div class="col-sm-9">
+                                <textarea name="Description" id="description" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <!-- Sizes -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Sizes</label>
+                            <div class="col-sm-9">
+                                <div>
+                                    @foreach (var size in new[] { "S", "M", "L", "XL", "XXL" })
+                                    {
+                                        <label>
+                                            <input type="checkbox" name="checkbox[]" value="@size" /> @size
+                                        </label>
+                                    }
                                 </div>
-                                <span class="text-danger" id="imgvalidation"> </span>
+                            </div>
+                        </div>
+                        <!-- Original Price -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Original Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="OriginalPrice" id="originalPrice" class="form-control" step="0.01" required />
+                            </div>
+                        </div>
+                        <!-- Discount -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Discount (%)</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="Discount" id="discount" class="form-control" min="0" max="100" />
+                            </div>
+                        </div>
+                        <!-- Final Price -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Final Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" id="finalPrice" class="form-control" readonly />
+                            </div>
+                        </div>
+                        <!-- SKU Name -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"> SKU </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="Sku" maxlength="100" required />
+                            </div>
+                        </div>
+                        <!-- Tag Name -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"> TAGS </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="Tags" id="Tags" maxlength="100" required placeholder="Enter tags separated by commas (e.g., Running, Fitness, Sports)" />
+                            </div>
+                        </div>
+                        <!-- Status -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Status</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="Status" required>
+                                    <option value="true" selected>Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Size:</label>
-
-                            <div class="col-sm-8 ">
-                                <div style="display: flex;
-                            gap: 10px;
-                            align-items: flex-start;">
-                                    <label>x:</label>
-                                    <input type="checkbox" value="x"
-                                           name="checkbox[]">
-                                    <label>xL:</label>
-                                    <input type="checkbox" value="xl"
-                                           name="checkbox[]">
-                                    <label>XLL:</label>
-                                    <input type="checkbox" value="xll"
-                                           name="checkbox[]">
-                                    <label>M:</label>
-                                    <input type="checkbox" value="m"
-                                           name="checkbox[]">
-                                    <label>S:</label>
-                                    <input type="checkbox" value="s"
-                                           name="checkbox[]">
-                                </div>
-                                <span class="text-danger" id="checkboxvalidation"> </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Original Price:</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control" id="originalPrice" placeholder="Orginal Price"
-                                       name="org_price">
-                                <span class="text-danger" id="org_pricevalidation"> </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Discount (%):</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control" id="discount" placeholder="Discount"
-                                       name="discount">
-                                <span class="text-danger" id="discountvalidation"> </span>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Final Price:</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control" id="finalPrice" placeholder="product">
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
-                        <button type="submit" class="btn btn-success mr-2">View</button>
-                        <button class="btn btn-dark">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="/admin/products" class="btn btn-secondary">Cancel</a>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+@section Scripts {
+    @* <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet"> *@
+    @* <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.min.js"></script> *@
+
+    <script>
+         document.getElementById('category').addEventListener('change', async function () {
+            const categoryId = this.value;
+
+            try {
+                const response = await fetch(`/Admin/Product/GetSubcategories?categoryId=${categoryId}`, {
+                    method: 'GET',
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                }
+                const results = await response.json();
+                const subcategories = await results.data;
+                 console.log("subcategorydd",subcategories);
+                // Update SubCategory dropdown
+                    const subCategoryDropdown = document.getElementById('subCategory');
+                subCategoryDropdown.innerHTML = ''; // Clear existing options
+
+                subcategories.forEach(subcategory => {
+                    const option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.textContent = subcategory.name;
+                    subCategoryDropdown.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error('Error fetching subcategories:', error);
+            }
+        });
+        </script>
+    
+    @* <script> *@
+    @*        $('#category').change(function () { *@
+    @*         var categoryId = $(this).val(); *@
+    @*         console.log("categoryId",categoryId); *@
+    @*         $.ajax({ *@
+    @*             url: '/Admin/Product/GetSubcategories', // Ensure the URL matches *@
+    @*             type: 'GET', *@
+    @*             data: { categoryId: categoryId }, *@
+    @*             success: function (response) { *@
+    @*                 // Update SubCategory dropdown *@
+    @*                 $('#subCategory').empty(); *@
+    @*                 $.each(response, function (index, subcategory) { *@
+    @*                     $('#subCategory').append( *@
+    @*                         $('<option>', { value: subcategory.id, text: subcategory.name }) *@
+    @*                     ); *@
+    @*                 }); *@
+    @*             }, *@
+    @*             error: function (xhr, status, error) { *@
+    @*                 console.error('Error fetching subcategories:', error); *@
+    @*             } *@
+    @*         }); *@
+    @*     }); *@
+
+    @* </script> *@
+
+    <script>
+         document.getElementById('originalPrice').addEventListener('input', calculateFinalPrice);
+        document.getElementById('discount').addEventListener('input', calculateFinalPrice);
+
+        function calculateFinalPrice() {
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value) || 0;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const finalPrice = originalPrice - (originalPrice * discount / 100);
+            document.getElementById('finalPrice').value = finalPrice.toFixed(2);
+        }
+</script>
+}

@@ -9,5 +9,8 @@ namespace EcommerceProject.Repositories.Repository.IRepository
         Task CreateRoleAsync(CustomRoleModel role);
         Task UpdateRoleAsync(CustomRoleModel role);
         Task DeleteRoleAsync(string roleId);
+        //Task GetRoleByUserIdAsync(string userId);
+        Task<CustomRoleModel> GetRoleByUserIdAsync(string userId); // Change return type to CustomRoleModel
+
     }
 }

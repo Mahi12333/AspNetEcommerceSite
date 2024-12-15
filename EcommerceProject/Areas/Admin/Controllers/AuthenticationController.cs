@@ -7,31 +7,36 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using EcommerceProject.Repositories.Repository.IRepository;
 using Azure.Identity;
+using EcommerceProject.Utils;
+using System.Security.Claims;
 
 namespace EcommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Route("api/admin")]
+    [Route("admin/[controller]")] // Base route for the controller
     public class AuthenticationController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly SignInManager<ApplicationUserModel> _signInManager;
         private readonly OtpService _otpService;
         private readonly ILogger<AuthenticationController> _logger;
+        private readonly TokenService _tokenService;
 
         public AuthenticationController(IUnitOfWork unitOfWork,
                                         SignInManager<ApplicationUserModel> signInManager,
                                         OtpService otpService,
-                                        ILogger<AuthenticationController> logger)
+                                        ILogger<AuthenticationController> logger,
+                                        TokenService tokenService)
         {
             _unitOfWork = unitOfWork;
             _signInManager = signInManager;
             _otpService = otpService;
             _logger = logger;
+            _tokenService = tokenService;
         }
 
         // GET: Admin/Authentication/Login
-        [HttpGet]
+        [HttpGet("login")]
         public IActionResult Login()
         {
             // Check if there's an error message in TempData (from previous login attempt)
@@ -60,7 +65,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginSubmit(LoginVM model)
         {
-            _logger.LogInformation("Received login request for email: {Email}", model.Email);
+            //_logger.LogInformation("Received login request for email: {Email}", model.Email);
 
             if (!ModelState.IsValid)
             {
@@ -76,6 +81,12 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 TempData["ErrorMessage"] = "Invalid email or password.";
                 return RedirectToAction("Login");
             }
+            // Genarate JWT and Refresh Tokens 
+            var accessToken = _tokenService.GenerateAccessToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await _unitOfWork.CompleteAsync();
 
             // Check if the password is correct
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
@@ -124,6 +135,16 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 var user = await _unitOfWork.ApplicationUserRepository.GetUserByEmailAsync(userEmail);
                 _logger.LogInformation("OTP verified successfully for user {Email}.", userEmail);
                 var username = user.UserName;
+                // Generate JWT and Refresh Tokens
+                var accessToken = _tokenService.GenerateAccessToken(user);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                await _unitOfWork.CompleteAsync();
+
+                // Store Tokens in Cookies
+                HttpContext.Response.Cookies.Append("AccessToken", accessToken, new CookieOptions { HttpOnly = true, Secure = true });
+                HttpContext.Response.Cookies.Append("RefreshToken", refreshToken, new CookieOptions { HttpOnly = true, Secure = true });
                 // Pass the username if needed, or just redirect
                 return RedirectToAction("Dashboard", "Home", new { username = username });
             }
@@ -164,17 +185,73 @@ namespace EcommerceProject.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
+            // Extract email from User claims
+            var email = User?.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                _logger.LogWarning("No email found in user claims during logout.");
+                return RedirectToAction("Login");
+            }
+
+            // Fetch the user by email
+            var user = await _unitOfWork.ApplicationUserRepository.GetUserByEmailAsync(email);
+            if (user != null)
+            {
+                // Invalidate refresh token
+                user.RefreshToken = null;
+                await _unitOfWork.CompleteAsync();
+            }
+
             _logger.LogInformation("User logged out.");
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
 
+
         // GET: Admin/Authentication/AccessDenied
-        [HttpGet]
+        [HttpGet("admin/accessDenied")]
         public IActionResult AccessDenied()
         {
             return View("AccessDenied");
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = HttpContext.Request.Cookies["RefreshToken"];
+            var accessToken = HttpContext.Request.Cookies["AccessToken"];
+
+            if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
+                return Unauthorized("Invalid tokens.");
+
+            var principal = _tokenService.ValidateAccessToken(accessToken);
+            if (principal == null)
+            {
+                var email = principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var user = await _unitOfWork.ApplicationUserRepository.GetUserByEmailAsync(email);
+
+                if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                    return Unauthorized("Invalid or expired refresh token.");
+
+                // Generate new tokens
+                var newAccessToken = _tokenService.GenerateAccessToken(user);
+                var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+                user.RefreshToken = newRefreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                await _unitOfWork.CompleteAsync();
+
+                HttpContext.Response.Cookies.Append("AccessToken", newAccessToken, new CookieOptions { HttpOnly = true, Secure = true });
+                HttpContext.Response.Cookies.Append("RefreshToken", newRefreshToken, new CookieOptions { HttpOnly = true, Secure = true });
+
+                return Ok(new { AccessToken = newAccessToken });
+            }
+
+            return Unauthorized("Invalid tokens.");
+        }
+
 
     }
 

@@ -1,5 +1,83 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using EcommerceProject.Areas.Admin.Models
+@model SubCategoryModel
+
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Add SubCategory Details </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Forms</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Add SubCategory</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <h4 class="card-title">SubCategory Details</h4>
+                    <p class="card-description"> Fill out the form below </p>
+
+                    <!-- Form Start -->
+                    <form asp-action="Create" method="post" asp-controller="SubCategory">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Category Dropdown -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Category</label>
+                            <div class="col-sm-9">
+                                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                                    <option value="">Select Category</option>
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- SubCategory Name -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">SubCategory Name</label>
+                            <div class="col-sm-9">
+                                <input asp-for="Name" class="form-control" placeholder="Enter subcategory name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label"> SubCategory Status</label>
+                            <div class="col-sm-9">
+                                <select asp-for="Status" class="form-control">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Form Buttons -->
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <a asp-action="Index" asp-controller="SubCategory" class="btn btn-success mr-2">View</a>
+                        <a href="@Url.Action("Index", "SubCategory", new { area = "Admin" })" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

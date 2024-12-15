@@ -25,6 +25,10 @@ namespace EcommerceProject.Repositories.Repository
         {
             _dbContext.SaveChanges();
         }
+        //public async Task SaveAsync() // Add this method
+        //{
+        //    await _dbContext.SaveChangesAsync();
+        //}
 
         public void Dispose()
         {

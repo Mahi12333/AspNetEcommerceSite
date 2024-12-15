@@ -18,6 +18,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
     public DbSet<OtpModel> Otps { get; set; } // Example: If you have an Otp table
     public DbSet<PermissionModel> Permissions { get; set; }
     public DbSet<UserPermissionModel> UserPermissions { get; set; }
+    public DbSet<CategoryModel> Categories { get; set; }
+    public DbSet<SubCategoryModel> SubCategories { get; set; }
+    public DbSet<ProductModel> Products { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -71,11 +75,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
             {
                 Id = adminUserId,
                 UserName = "adminUser",
-                Email = "admin@example.com",
+                Email = "mahitoshgiri287@gmail.com",
                 RoleId = adminRoleId, // Directly assigning the role ID
-                PasswordHash = new PasswordHasher<ApplicationUserModel>().HashPassword(null, "AdminPassword123"),
+                PasswordHash = new PasswordHasher<ApplicationUserModel>().HashPassword(null, "Admin"),
                 EmailConfirmed = true,
                 Slug = "admin-user",
+                RefreshToken = "SomeDummyTokenValue3543564",
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             }
@@ -121,5 +126,35 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
             .HasOne(up => up.Permission)
             .WithMany(p => p.UserPermissions)
             .HasForeignKey(up => up.PermissionId);
+
+        // Configure one-to-many relationship between Category and SubCategory
+        builder.Entity<SubCategoryModel>()
+            .HasOne(s => s.Category)
+            .WithMany(c => c.SubCategories)
+            .HasForeignKey(s => s.CategoryId);
+
+        // Products - Categories relationship
+        builder.Entity<ProductModel>()
+            .HasOne(p => p.Category)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict); // Use Restrict or SetNull
+
+        // Products - SubCategories relationship
+        builder.Entity<ProductModel>()
+            .HasOne(p => p.SubCategory)
+            .WithMany(sc => sc.Products)
+            .HasForeignKey(p => p.SubCategoryId)
+            .OnDelete(DeleteBehavior.Restrict); // Use Restrict or SetNull
+
+
+        builder.Entity<ProductModel>(entity =>
+        {
+            entity.Property(p => p.Discount)
+                  .HasColumnType("decimal(18,2)"); // Adjust precision and scale as needed
+            entity.Property(p => p.OriginalPrice)
+                  .HasColumnType("decimal(18,2)"); // Adjust precision and scale as needed
+        });
+
     }
 }

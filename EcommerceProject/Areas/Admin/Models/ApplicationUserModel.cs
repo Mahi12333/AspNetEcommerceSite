@@ -16,4 +16,7 @@ public class ApplicationUserModel : IdentityUser
 
     // Navigation property for UserPermissions
     public ICollection<UserPermissionModel> UserPermissions { get; set; } = new List<UserPermissionModel>();
+
+    public string RefreshToken { get; set; }
+    public DateTime? RefreshTokenExpiryTime { get; set; }
 }
