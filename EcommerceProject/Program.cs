@@ -124,14 +124,14 @@ namespace EcommerceProject
             app.UseRouting();
 
             // Custom Middleware
-            //app.UseMiddleware<AuthMiddleware>();
-            //app.UseMiddleware<AuthorizationMiddleware>();
-            //app.UseMiddleware<PermissionMiddleware>();
+            app.UseMiddleware<AuthMiddleware>();
+            app.UseMiddleware<AuthorizationMiddleware>();
+            app.UseMiddleware<PermissionMiddleware>();
 
             // For Pagination
             //app.UseDeveloperExceptionPage();
             // Add environment variables to configuration
-            
+
 
             // Authentication & Authorization Middleware
             app.UseAuthentication();  // Ensure authentication is added here
