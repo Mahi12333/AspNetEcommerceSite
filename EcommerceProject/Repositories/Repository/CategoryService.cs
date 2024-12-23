@@ -15,6 +15,8 @@ namespace EcommerceProject.Repositories.Repository
         }
         public async Task<IEnumerable<CategoryModel>> GetAllCategoriesAsync()
         {
+            var Category = await _context.Categories.ToListAsync();
+            Console.WriteLine($"Category --- Product: { Category }");
             return await _context.Categories.ToListAsync();
         }
 

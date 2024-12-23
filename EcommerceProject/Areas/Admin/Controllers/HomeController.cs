@@ -7,11 +7,12 @@ namespace EcommerceProject.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    [Authorize(Roles = "admin,subAdmin")] // Roles check
-    [Route("admin/[controller]")] // Base route for the controller
+    //[MyAuthorization] // This is for AuthMiddleware
+    [MyAuthorization("Admin")]   // This is for Authorization Middleware
+    [Route("Admin")]  // Base route for the controller
     public class HomeController : Controller
     {
-        [HttpGet]
+        [HttpGet("Dashboard")]
         //[Permission("view")] // Permissions check
         public IActionResult Dashboard()
         {

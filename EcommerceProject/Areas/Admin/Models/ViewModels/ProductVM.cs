@@ -17,5 +17,7 @@ namespace EcommerceProject.Areas.Admin.Models.ViewModels
         // Additional properties for display purposes (if needed)
         public IEnumerable<CategoryModel>? Categories { get; set; }
         public IEnumerable<SubCategoryModel>? SubCategories { get; set; }
+
+        
     }
 }

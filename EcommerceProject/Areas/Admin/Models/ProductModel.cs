@@ -21,5 +21,7 @@ namespace EcommerceProject.Areas.Admin.Models
         public CategoryModel? Category { get; set; }
         public SubCategoryModel? SubCategory { get; set; }
 
+
+
     }
 }

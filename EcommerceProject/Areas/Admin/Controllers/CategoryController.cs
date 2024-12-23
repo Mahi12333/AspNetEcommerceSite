@@ -1,11 +1,14 @@
 ﻿using EcommerceProject.Areas.Admin.Models;
 using EcommerceProject.Areas.Admin.Models.ViewModels;
 using EcommerceProject.Repositories.Repository.IRepository;
+using EcommerceProject.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [MyAuthorization("Admin", "Subadmin")]
+    [Route("Admin/Category")]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -15,6 +18,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             _categoryService = categoryService;
         }
 
+        [HttpGet("Index")]
+        [Permission("View Category")]
         public async Task<IActionResult> Index(string search, int page = 1, int pageSize = 10)
         {
             var result = await _categoryService.GetCategoriesAsync(search, page, pageSize);
@@ -28,6 +33,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        [HttpGet("Create")]
+        [Permission("Create Category")]
         // GET: Admin/Category/Create
         public IActionResult Create()
         {
@@ -35,7 +42,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // POST: Admin/Category/Create
-        [HttpPost]
+        [HttpPost("Create")]
+        [Permission("Create Category")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryModel category)
         {
@@ -45,7 +53,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 {
                     foreach (var error in modelState.Errors)
                     {
-                        Console.WriteLine(error.ErrorMessage);
+                        Console.WriteLine($"required field : {error.ErrorMessage}");
                     }
                 }
             }
@@ -60,6 +68,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             return View(category);
         }
 
+        [HttpGet("Edit")]
+        [Permission("Edit Category")]
         // GET: Admin/Category/Edit/{id}
         public async Task<IActionResult> Edit(int id)
         {
@@ -73,7 +83,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // POST: Admin/Category/Edit/{id}
-        [HttpPost]
+        [HttpPost("Edit")]
+        [Permission("Edit Category")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CategoryModel category)
         {
@@ -87,7 +98,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // POST: Admin/Category/Delete/{id}
-        [HttpPost]
+        [HttpPost("Delete")]
+        [Permission("Delete Category")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {

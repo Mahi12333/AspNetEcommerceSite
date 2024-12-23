@@ -9,11 +9,12 @@ using EcommerceProject.Repositories.Repository.IRepository;
 using Azure.Identity;
 using EcommerceProject.Utils;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EcommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("admin/[controller]")] // Base route for the controller
+    [Route("Admin/Authentication")]
     public class AuthenticationController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -35,8 +36,9 @@ namespace EcommerceProject.Areas.Admin.Controllers
             _tokenService = tokenService;
         }
 
-        // GET: Admin/Authentication/Login
-        [HttpGet("login")]
+        // GET: Admin/Authentication/Logis
+      [HttpGet("login")]
+      //[AllowAnonymous]
         public IActionResult Login()
         {
             // Check if there's an error message in TempData (from previous login attempt)
@@ -48,7 +50,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet("LoginConfirmetionEmail")]
         public IActionResult LoginConfirmetionEmail(OtpConfirmationVM model)
         {
             // Check if there's an error message in TempData (from previous login attempt)
@@ -61,21 +63,30 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         //api/admin
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost("LoginSubmit")]
+       // [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginSubmit(LoginVM model)
         {
-            //_logger.LogInformation("Received login request for email: {Email}", model.Email);
+            Console.WriteLine($"Email: {model.Email}");
+            Console.WriteLine($"Password: {model.Password}");
 
-            if (!ModelState.IsValid)
+            _logger.LogInformation("Received login request for emailaaa: {Email}", model.Email);
+           // Console.WriteLine("LoginSumit");
+
+               if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine($"Validation Error: {error.ErrorMessage}");
+                }
+               // Console.WriteLine("LoginSumitsss");
                 TempData["ErrorMessage"] = "Invalid input.";
                 return RedirectToAction("Login");
             }
 
             // Fetch user from database
             var user = await _unitOfWork.ApplicationUserRepository.GetUserByEmailAsync(model.Email);
-            _logger.LogInformation("Received login request for email: {User}", user);
+            _logger.LogInformation("Received login request for emailss: {User}", user);
             if (user == null)
             {
                 TempData["ErrorMessage"] = "Invalid email or password.";
@@ -90,7 +101,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
 
             // Check if the password is correct
             var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            _logger.LogInformation("Received login request for email: {passwordCheck}", passwordCheck);
+            _logger.LogInformation("Received login request for emaildddd: {passwordCheck}", passwordCheck);
             if (!passwordCheck.Succeeded)
             {
                 TempData["ErrorMessage"] = "Invalid email or password.";
@@ -116,7 +127,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
             return RedirectToAction("LoginConfirmetionEmail", otpConfirmationVM);
         }
 
-        [HttpPost("otpverify")]
+        [HttpPost("VerifyOtp")]
         public async Task<IActionResult> VerifyOtp(string otp, string userEmail)
         {
             // Retrieve the stored email
@@ -143,8 +154,22 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 await _unitOfWork.CompleteAsync();
 
                 // Store Tokens in Cookies
-                HttpContext.Response.Cookies.Append("AccessToken", accessToken, new CookieOptions { HttpOnly = true, Secure = true });
-                HttpContext.Response.Cookies.Append("RefreshToken", refreshToken, new CookieOptions { HttpOnly = true, Secure = true });
+                //HttpContext.Response.Cookies.Append("AccessToken", accessToken, new CookieOptions { HttpOnly = true, Secure = true });
+                HttpContext.Response.Cookies.Append("AccessToken", accessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false, // Secure only in Production  //app.Environment.IsDevelopment() ? false : true, 
+                    SameSite = SameSiteMode.Strict, // Optional: Restrict cross-site cookies
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(6 * 60) // Optional: Cookie expiration
+                });
+               // HttpContext.Response.Cookies.Append("RefreshToken", refreshToken, new CookieOptions { HttpOnly = true, Secure = true });
+                HttpContext.Response.Cookies.Append("RefreshToken", accessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false, // Secure only in Production  //app.Environment.IsDevelopment() ? false : true, 
+                    SameSite = SameSiteMode.Strict, // Optional: Restrict cross-site cookies
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(20 * 60) // Optional: Cookie expiration
+                });
                 // Pass the username if needed, or just redirect
                 return RedirectToAction("Dashboard", "Home", new { username = username });
             }
@@ -156,7 +181,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
 
 
         // GET: Admin/Authentication/ResendOtp
-        [HttpPost]
+        [HttpPost("ResendOtp")]
         public async Task<IActionResult> ResendOtp(string userEmail)
         {
             //var userEmail = TempData["UserEmail"]?.ToString();
@@ -182,7 +207,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
 
 
         // GET: Admin/Authentication/Logout
-        [HttpPost]
+        [MyAuthorization("User")]
+        [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
             // Extract email from User claims
@@ -199,7 +225,7 @@ namespace EcommerceProject.Areas.Admin.Controllers
             if (user != null)
             {
                 // Invalidate refresh token
-                user.RefreshToken = null;
+                user.RefreshToken = "INVALID";
                 await _unitOfWork.CompleteAsync();
             }
 
@@ -210,18 +236,20 @@ namespace EcommerceProject.Areas.Admin.Controllers
 
 
         // GET: Admin/Authentication/AccessDenied
-        [HttpGet("admin/accessDenied")]
+        [HttpGet("AccessDenied")]
         public IActionResult AccessDenied()
         {
             return View("AccessDenied");
         }
 
 
-        [HttpPost]
+        [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
             var refreshToken = HttpContext.Request.Cookies["RefreshToken"];
             var accessToken = HttpContext.Request.Cookies["AccessToken"];
+            Console.WriteLine($"refreshToken: {refreshToken}");
+            Console.WriteLine($"accessToken: {accessToken}");
 
             if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(accessToken))
                 return Unauthorized("Invalid tokens.");
@@ -243,8 +271,24 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
                 await _unitOfWork.CompleteAsync();
 
-                HttpContext.Response.Cookies.Append("AccessToken", newAccessToken, new CookieOptions { HttpOnly = true, Secure = true });
-                HttpContext.Response.Cookies.Append("RefreshToken", newRefreshToken, new CookieOptions { HttpOnly = true, Secure = true });
+                //HttpContext.Response.Cookies.Append("AccessToken", newAccessToken, new CookieOptions { HttpOnly = true, Secure = true });
+                //HttpContext.Response.Cookies.Append("RefreshToken", newRefreshToken, new CookieOptions { HttpOnly = true, Secure = true });
+
+                HttpContext.Response.Cookies.Append("AccessToken", accessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false, // Secure only in Production  //app.Environment.IsDevelopment() ? false : true, 
+                    SameSite = SameSiteMode.Strict, // Optional: Restrict cross-site cookies
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(4 * 60) // Optional: Cookie expiration
+                });
+
+                HttpContext.Response.Cookies.Append("RefreshToken", accessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = false, // Secure only in Production  //app.Environment.IsDevelopment() ? false : true, 
+                    SameSite = SameSiteMode.Strict, // Optional: Restrict cross-site cookies
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(20 * 60) // Optional: Cookie expiration
+                });
 
                 return Ok(new { AccessToken = newAccessToken });
             }
