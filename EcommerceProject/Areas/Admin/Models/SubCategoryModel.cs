@@ -25,6 +25,6 @@ namespace EcommerceProject.Areas.Admin.Models
         public DateTime? UpdatedAt { get; set; }
 
         // Add the navigation property for Products
-        public ICollection<ProductModel> Products { get; set; }
+        public ICollection<ProductModel> Products { get; set; } = new List<ProductModel>();
     }
 }

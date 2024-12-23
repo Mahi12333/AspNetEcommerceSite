@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Add Product</h4>
-                    <form method="post" enctype="multipart/form-data" asp-controller="Product">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="Create">
                         <!-- Category Dropdown -->
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Category</label>
@@ -52,7 +52,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Images</label>
                             <div class="col-sm-9">
-                                <input type="file" name="ImageUrls" id="images" class="form-control" multiple />
+                                <input type="file" name="Images" id="images" class="form-control" multiple />
                                 <div id="imagePreviews" class="mt-2"></div>
                             </div>
                         </div>

@@ -4,12 +4,14 @@ using EcommerceProject.Areas.Admin.Models.ViewModels;
 using EcommerceProject.Areas.Admin.Services;
 using EcommerceProject.Repositories.Repository;
 using EcommerceProject.Repositories.Repository.IRepository;
+using EcommerceProject.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EcommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [MyAuthorization("Admin", "Subadmin")]
     public class SubCategoryController : Controller
     {
         private readonly ISubCategoryService _subCategoryService;
@@ -21,6 +23,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             _categoryService = categoryService;
         }
 
+        [HttpGet("Index")]
+        [Permission("View Subcategory")]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10, string search = null)
         {
             var viewModel = await _subCategoryService.GetPagedSubCategoriesAsync(page, pageSize, search);
@@ -28,7 +32,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // HttpGet version of Create
-        [HttpGet]
+        [HttpGet("Create")]
+        [Permission("Create Subcategory")]
         public async Task<IActionResult> Create()
         {
             // Fetch all categories and convert them to SelectListItems for the dropdown
@@ -42,7 +47,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
+        [Permission("Create Subcategory")]
         public async Task<IActionResult> Create(SubCategoryVM viewModel)
         {
             if (!ModelState.IsValid)
@@ -87,7 +93,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("Edit")]
+        [Permission("Edit Subcategory")]
         public async Task<IActionResult> Edit(int id)
         {
             var subCategory = await _subCategoryService.GetSubCategoryByIdAsync(id);
@@ -114,7 +121,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("Edit")]
+        [Permission("Edit Subcategory")]
         public async Task<IActionResult> Edit(SubCategoryVM subCategoryVM)
         {
             if (!ModelState.IsValid)
@@ -147,7 +155,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        [HttpPost("Delete")]
+        [Permission("Delete Subcategory")]
         public async Task<IActionResult> Delete(int id)
         {
             bool result = await _subCategoryService.DeleteSubCategoryAsync(id);

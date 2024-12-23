@@ -18,9 +18,8 @@ namespace EcommerceProject.Areas.Admin.Models
 
         public DateTime? UpdatedAt { get; set; }
 
-        // Add the navigation property for SubCategories
-        public ICollection<SubCategoryModel> SubCategories { get; set; }
-        // Add the navigation property for Products
-        public ICollection<ProductModel> Products { get; set; }
+        // Initialize the navigation properties to avoid validation errors
+        public ICollection<SubCategoryModel> SubCategories { get; set; } = new List<SubCategoryModel>();
+        public ICollection<ProductModel> Products { get; set; } = new List<ProductModel>();
     }
 }

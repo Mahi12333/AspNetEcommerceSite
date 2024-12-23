@@ -12,7 +12,7 @@ namespace EcommerceProject.Areas.Admin.Models.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public bool RememberMe { get; set; }
+       // public bool RememberMe { get; set; }
 
         // Add the OTP property here
         // Optional: Include OTP here but don't make it required for the initial login.

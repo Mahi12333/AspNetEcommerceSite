@@ -1,6 +1,8 @@
 ﻿using EcommerceProject.Areas.Admin.Models.ViewModels;
 using EcommerceProject.Repositories.Repository.IRepository;
+using EcommerceProject.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -10,6 +12,8 @@ using System.Threading.Tasks;
 namespace EcommerceProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [MyAuthorization("Admin", "Subadmin")]
+    [Route("Admin/User")]
     public class UserController : Controller
     {
         private readonly IRoleService _roleService;
@@ -24,7 +28,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // GET: Create
-        [HttpGet]
+        [HttpGet("Create")]
+        [Permission("Create User")] // Permissions check
         public async Task<IActionResult> Create()
         {
             var model = new CreateUserVM
@@ -38,6 +43,9 @@ namespace EcommerceProject.Areas.Admin.Controllers
             };
             return View(model);
         }
+
+        [HttpGet("Index")]
+        [Permission("View User")] // Permissions check
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10, string search = "")
         {
             var users = await _userService.GetUsersAsync(page, pageSize, search);
@@ -68,11 +76,20 @@ namespace EcommerceProject.Areas.Admin.Controllers
 
 
         // POST: Create
-        [HttpPost]
+        [HttpPost("Create")]
+        [Permission("Create User")] // Permissions check
         public async Task<IActionResult> Create(CreateUserVM model)
         {
             if (!ModelState.IsValid)
                 return View(model);
+
+            if (model.Password != model.ConfirmPassword)
+            {
+                Console.WriteLine($"password not match: {model.Password}");
+                ModelState.AddModelError("ConfirmPassword", "Passwords do not match.");
+                return View(model);
+            }
+
 
             var newUser = new ApplicationUserModel
             {
@@ -81,6 +98,9 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 PhoneNumber = model.Mobile,
                 RoleId = model.RoleId,
                 Slug = model.UserName,
+                RefreshToken = "Enter your Refresh Token",
+                PasswordHash =  new PasswordHasher<ApplicationUserModel>().HashPassword(null, model.Password),
+
             };
 
             try
@@ -104,7 +124,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // GET: Edit User
-        [HttpGet]
+        [HttpGet("Edit")]
+        [Permission("Edit User")] // Permissions check
         public async Task<IActionResult> Edit(string userId)
         {
             var user = await _userService.GetUserByIdAsync(userId);
@@ -136,7 +157,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // PUT: Edit User
-        [HttpPost]
+        [HttpPost("Edit")]
+        [Permission("Edit User")] // Permissions check
         public async Task<IActionResult> EditSubmit(EditUserVM model)
         {
             ModelState.Remove("Password");
@@ -169,6 +191,9 @@ namespace EcommerceProject.Areas.Admin.Controllers
                 user.Email = model.Email;
                 user.RoleId = model.RoleId;
                 user.PhoneNumber = model.Mobile;
+                
+
+
 
                 // Update user in the database
                  await _userService.UpdateUserAsync(user);
@@ -202,7 +227,8 @@ namespace EcommerceProject.Areas.Admin.Controllers
         }
 
         // POST: Confirm Delete User
-        [HttpPost]
+        [HttpPost("Delete")]
+        [Permission("Delete User")] // Permissions check
         public async Task<IActionResult> ConfirmDelete(string userId)
         {
             try

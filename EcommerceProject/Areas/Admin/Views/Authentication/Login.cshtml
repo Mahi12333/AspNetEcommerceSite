@@ -34,7 +34,7 @@
                             }
 
                             <h3 class="card-title text-left mb-3">Login</h3>
-                            <form asp-action="LoginSubmit" method="post" asp-controller="Authentication">
+                            <form asp-action="LoginSubmit" method="post" asp-controller="Authentication" asp-area="Admin">
                                 @Html.AntiForgeryToken()
                                 <div class="form-group">
                                     <label asp-for="Email">Username or email *</label>

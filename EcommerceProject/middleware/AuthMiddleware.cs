@@ -18,13 +18,52 @@ namespace EcommerceProject.middleware
             _configuration = configuration;
         }
 
+
         public async Task InvokeAsync(HttpContext context)
+        {
+            var path = context.Request.Path.Value;
+
+            // Handle authentication
+            if (context.Request.Cookies.TryGetValue("AccessToken", out var accessToken))
+            {
+                try
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.UTF8.GetBytes(_jwtSecret);
+                    var validationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = _configuration["JwtSettings:Issuer"],
+                        ValidAudience = _configuration["JwtSettings:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                    };
+
+                    var principal = tokenHandler.ValidateToken(accessToken, validationParameters, out _);
+                    context.User = principal; // Attach user to HttpContext
+                }
+                catch
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsync("Unauthorized: Invalid or expired token.");
+                    return;
+                }
+            }
+
+            await _next(context);
+        }
+
+
+       /* public async Task InvokeAsync(HttpContext context)
         {
             var path = context.Request.Path.Value;
 
             // Allow unauthenticated access for the Customer area
             if (path != null && path.StartsWith("/customer", StringComparison.OrdinalIgnoreCase))
             {
+                Console.WriteLine("customer");
                 await _next(context);
                 return;
             }
@@ -85,5 +124,7 @@ namespace EcommerceProject.middleware
 
             await _next(context);
         }
+        */
+    
     }
 }

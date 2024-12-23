@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceProject.Areas.Customer.Controllers
 {
@@ -7,6 +8,7 @@ namespace EcommerceProject.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
+      //[AllowAnonymous]
         public IActionResult Index()
         {
             return View();
