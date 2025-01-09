@@ -1,7 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EcommerceProject.Areas.Admin.Models.ViewModels.EditProductVM
+
 @{
+    ViewData["Title"] = "Edit Product Details";
 }
 
 
@@ -21,35 +21,41 @@
                     <div class="card">
                       <div class="card-body">
                          <!-- show the message -->
-                         <div id="responseMessage" style="margin-top: 15px;"></div>
+                    <!-- Show any response messages -->
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
                         <h4 class="card-title">Deatails Add</h4>
                         <p class="card-description"> Table</p>
-                        <form class="forms-sample" id="my-form">
+                    <form asp-action="Edit" asp-controller="Product" asp-area="Admin" method="post" class="forms-sample" id="my-form" enctype="multipart/form-data" onsubmit="handleSubmit()">
+                        <input type="hidden"  asp-for="slug"/>
                           <div class="form-group row">
                             <label for="" class="col-sm-3 col-form-label">Category</label>
                             <div class="col-sm-9">
-                              <select class="form-control" name="category" id="category">
-                                <option value="">Select One</option>
-                              @*  <% data.allcategory.forEach(category => {%>
-                                    <option value="<%= category._id %>" <% if(category._id.toString() === data.allproduct.category) { %> selected <% } %> >
-                                        <%= category.category %>
-                                    </option>
-                                    <% }); %> *@
-                            </select>                            
-                              <span class="text-danger" id="catvalidation"> </span>
+                                <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+                                    <option value="">Select a category</option>
+                                </select>
+                                <span class="text-danger" id="catvalidation"> </span>
                             </div>
                           </div>
 
                           <div class="form-group row">
                             <label for="" class="col-sm-3 col-form-label">SubCategory</label>
                             <div class="col-sm-9">
-                              <select class="form-control" name="subcategory" id="subcategory">
-                                <option value="">Select One</option>
-                              @*  <% data.subcategory.forEach(subcategory => { %> 
-                                    <option value="<%= subcategory._id %>" <% if(subcategory._id.toString() === data.allproduct.subcategory) { %> selected <% } %> >
-                                        <%= subcategory.subcategory %>
-                                    </option>
-                                    <% }); %>   *@
+                                <select asp-for="SubCategoryId" class="form-control" asp-items="@(new SelectList(Model.SubCategories, "Id", "Name"))">
+                                    <option value="">Select a subcategory</option>
                                 </select>
                               <span class="text-danger" id="subvalidation"> </span>
                             </div>
@@ -58,43 +64,64 @@
                           <div class="form-group row">
                             <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Name</label>
                             <div class="col-sm-9">
-                              <input type="text" class="form-control" id="exampleInputMobile" placeholder="product" autocomplete="off"
-                                name="product" value="">
+                                <input type="text" class="form-control" id="productName" name="Name" value="@Model.Name" required>
+
                                 <span class="text-danger" id="produvalidation"> </span>
                             </div>
                           </div>
+
+                        <div class="form-group row">
+                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Describtion</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="productName" name="Description" value="@Model.Description" required>
+
+                                <span class="text-danger" id="produvalidation"> </span>
+                            </div>
+                        </div>
 
                           <div class="form-group row">
                             <label for="exampleInputImages" class="col-sm-3 col-form-label">Images</label>
                             <div class="col-sm-9">
                                 <div class="choose-imagefile-wrap">
                                     <div class="image-container" id="selectedImages">
-                                       @* <% data.allproduct.images.forEach(image => { %>
-                                        <div class="selected-image">
-                                            <img src="/backend/photo/<%= image %>" alt="Selected Image">
-                                            <p><%= image.substring(image.lastIndexOf('/') + 1) %></p>
-                                            <span class="remove-pic" onclick="removeImage(this)" >Remove</span>
-                                        </div>
-                                        <% }); %>  *@
+                                        @foreach (var image in Model.ExistingImages)
+                                        {
+                                            <div class="image-item" data-id="@image.Id">
+                                                <img src="@image.Path" alt="@image.FileName" style="max-height: 100px;" />
+                                                <p>@image.FileName (@image.Size bytes)</p> 
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteImage(@image.Id)">Remove</button> 
+                                            </div>
+                                        }
                                     </div>
-                                    <input type="file" id="primaryInput" onchange="handleFileSelection()" multiple>
-                                    <input type="hidden" id="hiddenInput" value="0">
+                                    @* <input type="file" id="primaryInput" onchange="handleFileSelection()" multiple> *@
+                                    @* <input type="hidden" id="hiddenInput" value="0"> *@
                                 </div>
                                 <span class="text-danger" id="imgvalidation"> </span>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="exampleInputMobile" class="col-sm-3 col-form-label">Upload New Images</label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control" name="Images" multiple />
+                            </div>
+                        </div>
+
+                        <!-- Hidden input to store the list of images to be removed -->
+                        <input type="hidden" id="imagesToRemove" name="ImagesToRemove" value="">
 
                              
                         <div class="form-group row">
                           <label for="exampleInputMobile" class="col-sm-3 col-form-label">Product Size:</label>
                           <div class="col-sm-8">
-                              <div style="display: flex; gap: 10px; align-items: flex-start;">
-                               @* <% ["x", "xl", "xll", "m", "s"].forEach(size => { %>
-                                  <label><%= size.toUpperCase() %>:
-                                      <input type="checkbox" value="<%= size%>" name="checkbox[]" <% if (data.allproduct.size[0].includes(size.toString())) { %> checked <% } %>>
-                                  </label>
-                                    <% }); %>  *@
-                              </div>
+                                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                                    @foreach (var size in new[] { "X", "XL", "XLL", "M", "S", "L" })
+                                    {
+                                        <label>
+                                            @size.ToUpper():
+                                            <input type="checkbox" value="@size" name="Sizes" @(Model.Sizes.Contains(size) ? "checked" : "") />
+                                        </label>
+                                    }
+                                </div>
                               <span class="text-danger" id="checkboxvalidation"> </span>
                           </div>
                       </div>
@@ -102,7 +129,7 @@
                       <div class="form-group row">
                           <label for="exampleInputMobile" class="col-sm-3 col-form-label">Original Price:</label>
                           <div class="col-sm-9">
-                              <input type="number" class="form-control" id="originalPrice" placeholder="Orginal Price" name="org_price" value="">
+                                <input type="number" class="form-control" id="originalPrice" placeholder="Orginal Price" name="OriginalPrice" value="@Model.OriginalPrice">
                               <span class="text-danger" id="org_pricevalidation"> </span>
                           </div>
                       </div>
@@ -110,7 +137,7 @@
                       <div class="form-group row">
                           <label for="exampleInputMobile" class="col-sm-3 col-form-label">Discount (%):</label>
                           <div class="col-sm-9">
-                              <input type="number" class="form-control" id="discount" placeholder="Discount" name="discount" value="">
+                                <input type="number" class="form-control" id="discount" placeholder="Discount" name="Discount" value="@Model.Discount">
                               <span class="text-danger" id="discountvalidation"> </span>
                           </div>
                       </div>
@@ -118,10 +145,24 @@
                       <div class="form-group row">
                           <label for="exampleInputMobile" class="col-sm-3 col-form-label">Final Price:</label>
                           <div class="col-sm-9">
-                              <input type="number" class="form-control" id="finalPrice" placeholder="Final Price" name="curr_price" value="">
+                                <input type="number" class="form-control" id="finalPrice" placeholder="Final Price" name="finalPrice" value="@Model.finalPrice">
                           </div>
                        </div>
-                          <input type="hidden" id="pro_id" value="">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Status</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" asp-for="Status" asp-items="@(new List<SelectListItem>
+                                {
+                                    new SelectListItem { Value = "active", Text = "Active" },
+                                    new SelectListItem { Value = "inactive", Text = "Inactive" }
+                                })" required>
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                          @* <input type="hidden" id="pro_id" value=""> *@
                           <button type="submit" class="btn btn-primary mr-2">Submit</button>
                           <button type="submit" class="btn btn-success mr-2">View</button>
                           <button class="btn btn-dark">Cancel</button>
@@ -132,3 +173,26 @@
 
                 </div>
               </div>
+
+@section Scripts {
+    <script>
+        let imagesToRemove = [];
+
+        function deleteImage(imageId) {
+            console.log("imageId", imageId);
+            // Add the image ID to the list of images to be removed
+            imagesToRemove.push(imageId);
+
+            // Remove the image from the UI
+            const imageItem = document.querySelector(`.image-item[data-id='${imageId}']`);
+            imageItem.parentNode.removeChild(imageItem);
+        }
+
+        // Add this to your form submit handler
+        function handleSubmit() {
+            document.getElementById('imagesToRemove').value = JSON.stringify(imagesToRemove);
+        }
+
+    </script>
+}
+                     

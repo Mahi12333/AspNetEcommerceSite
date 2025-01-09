@@ -9,6 +9,7 @@ using EcommerceProject.Areas.Admin.Services;
 using EcommerceProject.middleware;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using EcommerceProject.Repositories;
 
 namespace EcommerceProject
 {
@@ -53,6 +54,8 @@ namespace EcommerceProject
             builder.Services.AddScoped<IProductRepository, ProductRepositry>();
             builder.Services.AddScoped<TokenService>();
             builder.Services.AddScoped<IJwtService, JwtService>();
+            builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
 
             // Middleware Registration
             builder.Services.AddTransient<OtpManager>();

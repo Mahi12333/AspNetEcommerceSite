@@ -1,8 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+@model ProductPaginationListVM
+
 
 <div class="content-wrapper">
     <div class="page-header">
@@ -24,79 +22,147 @@
                     <button class="card-description badge badge-outline-warning" style="background-color: #000; margin-bottom:1rem">
                         Add Product
                     </button>
-                    <div class="d-flex align-items-center justify-content-between" style="margin-bottom:1rem">
-                        <div class="text-secondary">
-                            Show
-                            <div class="mx-2 d-inline-block">
-                                <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
-                            </div>
+                    <!-- Search and Pagination Controls -->
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            Show 
+                            <select asp-for="PageSize" class="form-control form-control-sm d-inline-block" style="width: auto;" onchange="updatePageSize(this.value)">
+                                @if (Model.PageSize == 5)
+                                {
+                                    <option value="5" selected>5</option>
+                                }
+                                else
+                                {
+                                    <option value="5">5</option>
+                                }
+
+                                @if (Model.PageSize == 10)
+                                {
+                                    <option value="10" selected>10</option>
+                                }
+                                else
+                                {
+                                    <option value="10">10</option>
+                                }
+
+                                @if (Model.PageSize == 20)
+                                {
+                                    <option value="20" selected>20</option>
+                                }
+                                else
+                                {
+                                    <option value="20">20</option>
+                                }
+                            </select>
                             entries
                         </div>
-                        <div class="ms-auto text-secondary">
-                            Search:
-                            <div class="ms-2 d-inline-block">
-                                <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                            </div>
+                        <div>
+                            Search: 
+                            <input id="searchInput" type="text" class="form-control form-control-sm d-inline-block" style="width: auto;" 
+                            placeholder="Search..." value="@Model.SearchQuery" onkeyup="performSearch(this.value)" />
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Product No.</th>
+                                    <th>Sr.No.</th>
                                     <th>Product</th>
                                     <th>Category</th>
                                     <th>SubCategory</th>
                                     <th>Images</th>
-                                    <th>Checkbox</th>
+                                    <th>Size</th>
                                     <th>Origial Rs.</th>
                                     <th>Discount</th>
                                     <th>Final Rs.</th>
+                                    <th>CreatedAt</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
-                                    <th>View</th>
+                                    @* <th>View</th> *@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (Model.Products.Any())
+                                {
+                                    foreach (var product in Model.Products)
+                                    {
+                                        var size = string.Join(", ", product.Sizes);
 
-                                 <tr>
-                                  <td>Dave</td>
-                                  <td>53275535</td>
-                                  <td>20 May 2017</td>
-                                  <td>Dave</td>
-                                  <td>Dave</td>
-                                  <td>53275535</td>
-                                  <td>20 May 2017</td>
-                                  <td><label class="badge badge-warning">In progress</label></td>
-                                  <td><label class="badge badge-outline-success">Edit</label></td>
-                                  <td><label class="badge badge-outline-danger">Delete</label></td>
-                                  <td><label class="badge badge-outline-warning">View</label></td>
-                                </tr>
+                                        <tr>
+                                            <td>@product.Id</td>
+                                            <td>@product.Name</td>
+                                            <td>@product.Category</td>
+                                            <td>@product.SubCategory</td>
+                                            <td>
+                                                @if (product.ImagesPath.Any())
+                                                {
+                                                    @foreach (var image in product.ImagesPath)
+                                                    {
+                                                        <img src="@image" alt="Product Image" class="img-thumbnail" style="width: 50px; height: 50px;" />
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span>No Images</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @size
+                                            </td>
+
+                                            <td>@product.OriginalPrice.ToString("C")</td>
+                                            <td>@product.Discount.ToString("P")</td>
+                                            <td>@product.finalPrice.ToString()</td>
+                                            <td>@product.CreatedAt.ToString("dd-MM-yyyy")</td>
+                                            <td>
+                                                <span class="badge @(product.Status == "Active" ? "badge-success" : "badge-danger")">
+                                                    @product.Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @* <a asp-action="Edit" asp-route-id="@product.slug" class="btn btn-sm btn-warning">Edit</a> *@
+                                                <a href="@Url.Action("Edit", "Product", new { area = "Admin", slug = product.slug })" class="btn btn-sm btn-warning">Edit</a>
+                                            </td>
+                                            <td>
+                                                @* <a asp-action="Delete" asp-route-id="@product.slug" class="btn btn-sm btn-danger">Delete</a> *@
+                                                <form asp-action="Delete" asp-controller="Product" asp-area="Admin" method="Delete" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                                    <input type="hidden" name="slug" value="@product.slug" />
+                                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="12" class="text-center">No Products Found</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
-                    <!-- pagination -->
+
+                    <!-- Pagination -->
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <p class="m-0 text-secondary" id="pagination-info">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
-                        <ul class="pagination m-0 ms-auto" id="pagination">
-                            <!-- <li class="page-item disabled">
-                              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                prev
-                              </a>
+                        <p class="m-0">Showing @Model.PageSize entries per page, Page @Model.Page of @((Model.TotalProducts + Model.PageSize - 1) / Model.PageSize)</p>
+                        <ul class="pagination m-0">
+                            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                                <a class="page-link" href="javascript:void(0);" onclick="changePage(@(Model.Page - 1))">Prev</a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item">
-                              <a class="page-link" href="#">
-                                next
-                              </a>
-                            </li> -->
+                            @for (int pageIndex = 1; pageIndex <= (Model.TotalProducts + Model.PageSize - 1) / Model.PageSize; pageIndex++)
+                            {
+                                <li class="page-item @(Model.Page == pageIndex ? "active" : "")">
+                                    <a class="page-link" href="javascript:void(0);" onclick="changePage(@pageIndex)">@pageIndex</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.Page >= (Model.TotalProducts + Model.PageSize - 1) / Model.PageSize ? "disabled" : "")">
+                                <a class="page-link" href="javascript:void(0);" onclick="changePage(@(Model.Page + 1))">Next</a>
+                            </li>
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -104,3 +170,24 @@
 
     </div>
 </div>
+
+
+@section Scripts {
+    <script>
+        function updatePageSize(pageSize) {
+            const searchQuery = document.getElementById('searchInput').value;
+            window.location.href = `?page=1&pageSize=${pageSize}&search=${searchQuery}`;
+        }
+
+        function performSearch(search) {
+            const pageSize = @Model.PageSize;
+            window.location.href = `?page=1&pageSize=${pageSize}&search=${search}`;
+        }
+
+        function changePage(page) {
+            const pageSize = @Model.PageSize;
+            const searchQuery = document.getElementById('searchInput').value;
+            window.location.href = `?page=${page}&pageSize=${pageSize}&search=${searchQuery}`;
+        }
+    </script>
+}

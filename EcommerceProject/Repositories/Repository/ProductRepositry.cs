@@ -1,7 +1,7 @@
 ﻿using EcommerceProject.Areas.Admin.Models;
-using EcommerceProject.Areas.Admin.Models.ViewModels;
 using EcommerceProject.Repositories.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace EcommerceProject.Repositories.Repository
 {
@@ -22,12 +22,12 @@ namespace EcommerceProject.Repositories.Repository
                 .ToListAsync();
         }
 
-        public async Task<ProductModel> GetByIdAsync(int id)
+        public async Task<ProductModel> GetByIdAsync(string slug)
         {
             return await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.SubCategory)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.slug == slug);
         }
 
         public async Task AddAsync(ProductModel product)
@@ -42,14 +42,19 @@ namespace EcommerceProject.Repositories.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string slug)
         {
-            var product = await GetByIdAsync(id);
+            var product = await GetByIdAsync(slug);
             if (product != null)
             {
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task SaveChangesAsync()
+        {
+                await _context.SaveChangesAsync();
         }
     }
 }

@@ -17,6 +17,22 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <!-- Display Success Message if any -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    <!-- Display Error Message if any -->
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
                     <h4 class="card-title">Add Product</h4>
                     <form method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="Create">
                         <!-- Category Dropdown -->
@@ -71,7 +87,7 @@
                                     @foreach (var size in new[] { "S", "M", "L", "XL", "XXL" })
                                     {
                                         <label>
-                                            <input type="checkbox" name="checkbox[]" value="@size" /> @size
+                                            <input type="checkbox" name="Sizes[]" value="@size" /> @size
                                         </label>
                                     }
                                 </div>
@@ -94,8 +110,8 @@
                         <!-- Final Price -->
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Final Price</label>
-                            <div class="col-sm-9">
-                                <input type="number" id="finalPrice" class="form-control" readonly />
+                            <div class="col-sm-9" style="color: aqua">
+                                <input type="number" id="finalPrice" name="finalPrice" class="form-control" readonly />
                             </div>
                         </div>
                         <!-- SKU Name -->
@@ -117,8 +133,8 @@
                             <label class="col-sm-3 col-form-label">Status</label>
                             <div class="col-sm-9">
                                 <select class="form-control" name="Status" required>
-                                    <option value="true" selected>Active</option>
-                                    <option value="false">Inactive</option>
+                                    <option value="active" selected>Active</option>
+                                    <option value="inactive">Inactive</option>
                                 </select>
                             </div>
                         </div>

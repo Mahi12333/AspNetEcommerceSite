@@ -21,6 +21,7 @@
     <Folder Include="Migrations\" />
     <Folder Include="ViewModels\" />
     <Folder Include="wwwroot\images\products\" />
+    <Folder Include="wwwroot\uploads\products\" />
   </ItemGroup> 
 
   <ItemGroup>

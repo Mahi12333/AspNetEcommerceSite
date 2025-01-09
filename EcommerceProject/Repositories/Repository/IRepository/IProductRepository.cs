@@ -6,9 +6,10 @@ namespace EcommerceProject.Repositories.Repository.IRepository
     public interface IProductRepository
     {
         Task<IEnumerable<ProductModel>> GetAllAsync();
-        Task<ProductModel> GetByIdAsync(int id);
+        Task<ProductModel> GetByIdAsync(string slug);
         Task AddAsync(ProductModel product);
         Task UpdateAsync(ProductModel product);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(string slug);
+        Task SaveChangesAsync();
     }
 }

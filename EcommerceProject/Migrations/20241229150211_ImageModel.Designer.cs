@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcommerceProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241229150211_ImageModel")]
+    partial class ImageModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,21 +114,21 @@ namespace EcommerceProject.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            Id = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4bb190a-0d01-4e71-a353-ce8be06dda4f",
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4022),
+                            ConcurrencyStamp = "38a9d2ce-b568-4574-a675-9dca224953ba",
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3590),
                             Email = "mahitoshgiri287@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEBRROp0pdSdUbGsU5a1vneMvuveDHPL96V929WBVBNPPaNj/JSBT/KN5mWX57V10Mg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECSTyLdRjAYnMQB9UJQ2/upUVKc0GZ+uQiURAfF6SGvhENXJ7Coa9OVwgwR/r6v0tg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "SomeDummyTokenValue3543564",
                             RoleId = "B993F718-51B6-4FBE-9F17-037FA1585827",
-                            SecurityStamp = "b7d927e2-4617-49da-8447-b2cf424d9efb",
+                            SecurityStamp = "433760df-e061-44dd-a81c-bd499270fe16",
                             Slug = "admin-user",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4029),
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3598),
                             UserName = "adminUser"
                         });
                 });
@@ -198,26 +201,26 @@ namespace EcommerceProject.Migrations
                         new
                         {
                             Id = "B993F718-51B6-4FBE-9F17-037FA1585827",
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 624, DateTimeKind.Utc).AddTicks(698),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 8, 913, DateTimeKind.Utc).AddTicks(4467),
                             Name = "Admin",
                             Slug = "admin",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 624, DateTimeKind.Utc).AddTicks(698)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 8, 913, DateTimeKind.Utc).AddTicks(4469)
                         },
                         new
                         {
                             Id = "C0CF4D0F-9BC6-4B70-BAED-2CA10F1AAA30",
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 624, DateTimeKind.Utc).AddTicks(701),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 8, 913, DateTimeKind.Utc).AddTicks(4478),
                             Name = "Subadmin",
                             Slug = "subadmin",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 624, DateTimeKind.Utc).AddTicks(701)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 8, 913, DateTimeKind.Utc).AddTicks(4479)
                         },
                         new
                         {
                             Id = "5482176B-6706-476D-A273-1EA9AD5AD217",
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 624, DateTimeKind.Utc).AddTicks(704),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 8, 913, DateTimeKind.Utc).AddTicks(4487),
                             Name = "Supersubadmin",
                             Slug = "supersubadmin",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 624, DateTimeKind.Utc).AddTicks(704)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 8, 913, DateTimeKind.Utc).AddTicks(4488)
                         });
                 });
 
@@ -317,128 +320,128 @@ namespace EcommerceProject.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4163),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3968),
                             PermissionName = "Create Product",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4164)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3970)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4173),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3984),
                             PermissionName = "Edit Product",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4173)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3985)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4175),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3988),
                             PermissionName = "Delete Product",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4175)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3989)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4176),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3992),
                             PermissionName = "View Orders",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4177)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3992)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4178),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3995),
                             PermissionName = "View User",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4178)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(3996)
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4192),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4013),
                             PermissionName = "Access Admin Dashboard",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4192)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4013)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4195),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4016),
                             PermissionName = "Edit User",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4195)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4017)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4196),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4020),
                             PermissionName = "Delete User",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4197)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4020)
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4198),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4023),
                             PermissionName = "Create Category",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4198)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4023)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4200),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4028),
                             PermissionName = "Edit Category",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4201)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4029)
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4202),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4032),
                             PermissionName = "Delete Category",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4203)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4033)
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4204),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4035),
                             PermissionName = "Create Subcategory",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4204)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4036)
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4205),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4039),
                             PermissionName = "Edit Subcategory",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4206)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4039)
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4207),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4391),
                             PermissionName = "Delete Subcategory",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4207)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4421)
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4208),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4424),
                             PermissionName = "Create User",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4209)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4425)
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4210),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4427),
                             PermissionName = "View Category",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4210)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4428)
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4212),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4430),
                             PermissionName = "View Subcategory",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4212)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4431)
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4214),
+                            CreatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4438),
                             PermissionName = "View Product",
-                            UpdatedAt = new DateTime(2024, 12, 30, 14, 3, 13, 701, DateTimeKind.Utc).AddTicks(4215)
+                            UpdatedAt = new DateTime(2024, 12, 29, 15, 2, 9, 95, DateTimeKind.Utc).AddTicks(4439)
                         });
                 });
 
@@ -474,22 +477,11 @@ namespace EcommerceProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("finalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("slug")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -552,92 +544,92 @@ namespace EcommerceProject.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 1
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 2
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 3
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 4
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 5
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 6
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 7
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 8
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 9
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 10
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 11
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 12
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 13
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 14
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 15
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 16
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 17
                         },
                         new
                         {
-                            UserId = "ecc0548c-b9fe-429f-af0b-8b7aafd10138",
+                            UserId = "c6fda8d7-acc0-4bff-bd21-3c2c1000cc45",
                             PermissionId = 18
                         });
                 });

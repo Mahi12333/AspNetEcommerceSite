@@ -21,6 +21,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
     public DbSet<CategoryModel> Categories { get; set; }
     public DbSet<SubCategoryModel> SubCategories { get; set; }
     public DbSet<ProductModel> Products { get; set; }
+    public DbSet<ImageModel> Images { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -93,7 +94,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
        new PermissionModel { Id = 2, PermissionName = "Edit Product" },
        new PermissionModel { Id = 3, PermissionName = "Delete Product" },
        new PermissionModel { Id = 4, PermissionName = "View Orders" },
-       new PermissionModel { Id = 5, PermissionName = "Manage Users" },
+       new PermissionModel { Id = 5, PermissionName = "View User" },
        new PermissionModel { Id = 6, PermissionName = "Access Admin Dashboard" },
        new PermissionModel { Id = 7, PermissionName = "Edit User" },
        new PermissionModel { Id = 8, PermissionName = "Delete User" },
@@ -102,7 +103,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
        new PermissionModel { Id = 11, PermissionName = "Delete Category" },
        new PermissionModel { Id = 12, PermissionName = "Create Subcategory" },
        new PermissionModel { Id = 13, PermissionName = "Edit Subcategory" },
-       new PermissionModel { Id = 14, PermissionName = "Delete Subcategory" }
+       new PermissionModel { Id = 14, PermissionName = "Delete Subcategory" },
+       new PermissionModel { Id = 15, PermissionName = "Create User" },
+       new PermissionModel { Id = 16, PermissionName = "View Category" },
+       new PermissionModel { Id = 17 , PermissionName = "View Subcategory" },
+        new PermissionModel { Id = 18 , PermissionName = "View Product" },
         // Add remaining permissions here...
     };
         builder.Entity<PermissionModel>().HasData(permissions);
@@ -140,6 +145,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.Restrict); // Use Restrict or SetNull
 
+
+
         // Products - SubCategories relationship
         builder.Entity<ProductModel>()
             .HasOne(p => p.SubCategory)
@@ -155,6 +162,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel, Cust
             entity.Property(p => p.OriginalPrice)
                   .HasColumnType("decimal(18,2)"); // Adjust precision and scale as needed
         });
+
+        // Product - Image relationship
+        builder.Entity<ProductModel>()
+            .HasMany(p => p.Images)
+            .WithOne(i => i.Product)
+            .HasForeignKey(i => i.ProductId);
 
     }
 }
